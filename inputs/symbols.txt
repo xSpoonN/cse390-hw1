@@ -1,0 +1,9 @@
+input symbols
+- = wall
+0-9 = dirt
++ = charge/start pos
+ = "wall"
+
+printouts
+x = robot
+* if robot is charging
