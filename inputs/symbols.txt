@@ -1,5 +1,5 @@
 input symbols
-= = wall
+. = wall
 0-9 = dirt
 + = charge/start pos
  = "wall"
