@@ -3,10 +3,21 @@
 #include <fstream>
 #include <string>
 
-int main() {
-	std::ifstream file;
-	file.open("input.txt");
-	std::string line; int maxcharge = 0; int maxsteps = 0;
+using std::cout;
+
+int main(int argc, char **argv) {
+	// Verify that a file was passed as an arg.
+	if (argc < 2) {
+		cout << "Please specify a file! " << *argv << " <filename>" << std::endl;
+		return EXIT_FAILURE;
+	}
+	// Attempt to open the file.
+	std::ifstream file(*(argv+1));
+	if (!file.is_open()) {
+		cout << "Invalid file." << std::endl;
+		return EXIT_FAILURE;
+	}
+	// Todo: Parse lines
 	if (std::getline(file, line)) {
 		int pos = line.find("MAXCHARGE:");
 		if (pos == std::string::npos) {
