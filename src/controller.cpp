@@ -6,13 +6,14 @@
 using std::vector;
 
 class Controller {
+	const Robot& robot;
 	size_t steps_from_charger;
 	vector<Direction> path_to_charger;
 public:
-	Controller::Controller()
-		: steps_from_charger(0), path_to_charger({}) {}
+	Controller::Controller(const Robot& robot)
+		: robot(robot), steps_from_charger(0), path_to_charger({}) {}
 
-	Direction get_next_step(const Robot& robot) {
+	Direction get_next_step() {
 		// Todo: implement basic decision-making
 	}
 };

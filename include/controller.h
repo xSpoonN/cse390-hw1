@@ -2,11 +2,13 @@
 #define CONTROLLER
 
 #include "directions.h"
+#include "robot.h"
 
 class Controller {
+	const Robot& robot;
 public:
-	Controller();
-	Direction get_next_step(const Robot&);
+	Controller(const Robot&);
+	Direction get_next_step();
 };
 
 #endif
