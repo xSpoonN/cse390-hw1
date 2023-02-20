@@ -12,7 +12,7 @@ public:
 	Controller::Controller()
 		: steps_from_charger(0), path_to_charger({}) {}
 
-	Direction get_next_step() {
+	Direction get_next_step(const Robot& robot) {
 		// Todo: implement basic decision-making
 	}
 };

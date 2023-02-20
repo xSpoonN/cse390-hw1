@@ -50,6 +50,7 @@ public:
 	int clean_house() {
 		while (current_steps < max_steps && remaining_dirt > 0 && current_battery > 0) {
 			++current_steps;
+			controller.get_next_step(*this);
 			// Todo: the rest of the program
 		}
 	}

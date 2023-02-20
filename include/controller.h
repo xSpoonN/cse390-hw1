@@ -6,7 +6,7 @@
 class Controller {
 public:
 	Controller();
-	Direction get_next_step();
+	Direction get_next_step(const Robot&);
 };
 
 #endif
