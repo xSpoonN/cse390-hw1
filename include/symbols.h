@@ -2,7 +2,7 @@
 #define SYMBOLS
 
 enum class Symbol { NONE, WALL, CHARGER, ROBOT, CHARGING,
-					DIRT0, DIRT1, DIRT2, DIRT3, DIRT4, DIRT5, DIRT6, DIRT7, DIRT8, DIRT9 };
+	DIRT0, DIRT1, DIRT2, DIRT3, DIRT4, DIRT5, DIRT6, DIRT7, DIRT8, DIRT9 };
 
 char sym_char(Symbol sym) {
 	switch (sym) {
