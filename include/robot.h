@@ -9,11 +9,11 @@ using house = std::vector<std::vector<char>>;
 
 class Robot {
 public:
-	Robot();
+	Robot(house, int, int);
 	int clean_house();
-	int get_dirt();
-	int is_wall(Direction direction);
-	int remaining_battery();
+	size_t get_dirt_underneath() const;
+	bool is_wall(Direction direction) const;
+	size_t remaining_battery() const;
 };
 
 #endif

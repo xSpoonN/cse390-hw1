@@ -1,6 +1,7 @@
 #include <vector>
 
 #include "controller.h"
+#include "robot.h"
 
 using std::vector;
 
@@ -8,12 +9,11 @@ class Controller {
 	size_t steps_from_charger;
 	vector<Direction> path_to_charger;
 public:
-	Controller() {
-
-	}
+	Controller::Controller()
+		: steps_from_charger(0), path_to_charger({}) {}
 
 	Direction get_next_step() {
-
+		// Todo: implement basic decision-making
 	}
 };
 

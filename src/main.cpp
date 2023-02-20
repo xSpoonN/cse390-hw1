@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "symbols.h"
+#include "robot.h"
 
 #define err(msg) cout << msg << endl; file.close(); return EXIT_FAILURE;
 
@@ -33,38 +34,51 @@ int main(int argc, char** argv) {
 	}
 
 	/* Attempt to open the file. */
-	std::ifstream file(argv[1]);
-	if (!file.is_open()) { err("Invalid File given"); }
+	std::ifstream file(*(argv+1));
+	if (!file.is_open()) {
+		err("Invalid File given");
+	}
 
 	/* Parse Max Charge */
-	string line; int charge = 0; int steps = 0; int pos;
+	string line;
+	int charge = 0, steps = 0, pos;
 	if (std::getline(file, line)) {
 		pos = line.find("MAX_CHARGE:");
-		if (pos == string::npos) { err("Maximum Charge not defined!"); }
-		string mcin = line.substr(pos + 12);
+		if (pos == string::npos) {
+			err("Maximum Charge not defined!");
+		}
+		string mcin = line.substr(pos + 12);  // Todo: remove hardcoded 12
 		for (auto c : mcin) { /* Validates input */
-			if (!std::isdigit(c)) { err("Invalid MAX_CHARGE input!"); }
+			if (!std::isdigit(c)) {
+				err("Invalid MAX_CHARGE input!");
+			}
 		}
 		charge = std::stoi(mcin);
-	} else { err("Maximum Charge not defined!"); }
+	} else {
+		err("Maximum Charge not defined!");
+	}
 
 	/* Parse Max Steps */
 	if (std::getline(file, line)) {
 		pos = line.find("MAX_STEPS:");
-		if (pos == string::npos) { err("Maximum Steps not defined!"); }
-		string msin = line.substr(pos + 11);
+		if (pos == string::npos) {
+			err("Maximum Steps not defined!");
+		}
+		string msin = line.substr(pos + 11);  // Todo: remove hardcoded 11
 		for (auto c : msin) { /* Validates input */
-			if (!std::isdigit(c)) { err("Invalid MAX_STEPS input!"); }
+			if (!std::isdigit(c)) {
+				err("Invalid MAX_STEPS input!");
+			}
 		}
 		steps = std::stoi(msin);
-	} else
+	} else {
 		err("Maximum Steps not defined!");
+	}
 
 	/* Read input into a "house" */
 	house model;
-	int row = 0;
-	int col = 0;
-	std::pair<int, int> start(-1,-1); /// Charger/Start Position
+	int row = 0, col = 0;
+	std::pair<int, int> start(-1,-1); /// Charger/Start Position Todo: move this into robot.cpp
 	while (std::getline(file, line)) {
 		vector<char> rowvec;
 		for (auto c : line) {
@@ -72,8 +86,9 @@ int main(int argc, char** argv) {
 			if (c == sym_char(Symbol::CHARGER)) {
 				if (start.first == -1 && start.second == -1)
 					start = std::make_pair(row, col);
-				else 
+				else {
 					err("Only one start position may be defined!");
+				}
 			}
 			++col;
 		}
@@ -82,6 +97,9 @@ int main(int argc, char** argv) {
 	}
 	printarr(model, start, charge, steps);
 	cout << start.first << ", " << start.second << endl;
+
+	Robot robot(model, charge, steps);
+	robot.clean_house();
 
 	return EXIT_SUCCESS;
 }
