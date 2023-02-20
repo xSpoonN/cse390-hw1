@@ -60,7 +60,7 @@ int main(int argc, char** argv) {
 	} else
 		err("Maximum Steps not defined!");
 
-	/* Read input into a matrix */
+	/* Read input into a "house" */
 	house model;
 	int row = 0;
 	int col = 0;

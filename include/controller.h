@@ -3,6 +3,10 @@
 
 #include "directions.h"
 
-Direction get_next_step();
+class Controller {
+public:
+	Controller();
+	Direction get_next_step();
+};
 
 #endif
