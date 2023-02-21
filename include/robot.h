@@ -9,7 +9,7 @@ using house = std::vector<std::vector<char>>;
 
 class Robot {
 public:
-	Robot(house, int, int);
+	Robot(house, size_t, size_t, int, int);
 	int clean_house();
 	size_t get_dirt_underneath() const;
 	bool is_wall(Direction direction) const;

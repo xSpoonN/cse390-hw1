@@ -1,7 +1,7 @@
 #ifndef SYMBOLS
 #define SYMBOLS
 
-enum class Symbol { NONE, WALL, CHARGER, ROBOT, CHARGING,
+enum class Symbol { NONE, WALL, CHARGER, ROBOTSYM, CHARGING,
 	DIRT0, DIRT1, DIRT2, DIRT3, DIRT4, DIRT5, DIRT6, DIRT7, DIRT8, DIRT9 };
 
 char sym_char(Symbol sym) {
@@ -9,7 +9,7 @@ char sym_char(Symbol sym) {
 		case Symbol::NONE: return ' ';
 		case Symbol::WALL: return '.';
 		case Symbol::CHARGER: return '+';
-		case Symbol::ROBOT: return 'x';
+		case Symbol::ROBOTSYM: return 'x';
 		case Symbol::CHARGING: return '*';
 		case Symbol::DIRT0: return '0';
 		case Symbol::DIRT1: return '1';

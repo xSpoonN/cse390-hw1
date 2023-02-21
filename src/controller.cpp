@@ -43,7 +43,31 @@ public:
 	Controller(const Robot& rob): rob(rob), steps_from_charger(0), path_to_charger({}) {}
 
 	Direction get_next_step() {
-		//return dfs();
+		Direction dir = naive_algorithm();
+		switch (dir) { /* Push the reverse into path_to_charger vec. */
+		case Direction::NORTH:
+			path_to_charger.push_back(Direction::SOUTH); break;
+		case Direction::EAST:
+			path_to_charger.push_back(Direction::WEST); break;
+		case Direction::SOUTH:
+			path_to_charger.push_back(Direction::NORTH); break;
+		case Direction::WEST:
+			path_to_charger.push_back(Direction::EAST); break;
+		}
+		++steps_from_charger;
+		return dir;
+	}
+
+private:
+	Direction naive_algorithm() {
+		vector<Direction> choice;
+		if (rob.get_dirt_underneath() > 0) return Direction::STAY; /* If there's dirt stay still */
+		if (!rob.is_wall(Direction::NORTH)) choice.push_back(Direction::NORTH);
+		if (!rob.is_wall(Direction::EAST)) choice.push_back(Direction::EAST);
+		if (!rob.is_wall(Direction::SOUTH)) choice.push_back(Direction::SOUTH);
+		if (!rob.is_wall(Direction::WEST)) choice.push_back(Direction::WEST);
+		if (choice.size() == 0) return Direction::NONE; /* Robert is walled in. xdd */
+		return choice[std::rand() % choice.size()];
 	}
 	void dfs(Position pos, vector<Node>& visited) {
 
@@ -84,6 +108,7 @@ public:
 		//	}
 
 		//}
+		// aaaauuuugggghhhhhhhhhh
 
 	}
 

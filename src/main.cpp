@@ -16,7 +16,7 @@ using std::string;
 using std::vector;
 using house = vector<vector<char>>;
 
-static inline void const printarr(const house& model, const std::pair<int, int> p, int currcharge = 0, int currsteps = 0) {
+static inline void const printarr(const house & model, const std::pair<int, int> p, int currcharge = 0, int currsteps = 0) {
 	cout << "Charge remaining: " << currcharge << " | Steps remaining: " << currsteps << endl;
 	for (int i = 0; i < model.size(); i++) {
 		for (int j = 0; j < model[0].size(); j++) {
@@ -98,7 +98,7 @@ int main(int argc, char** argv) {
 	printarr(model, start, charge, steps);
 	cout << start.first << ", " << start.second << endl;
 
-	Robot robot(model, charge, steps);
+	Robot robot(model, charge, steps, start.first, start.second);
 	robot.clean_house();
 
 	return EXIT_SUCCESS;

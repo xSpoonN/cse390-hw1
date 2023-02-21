@@ -19,4 +19,8 @@
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="inputs\basic.txt" />
+    <Text Include="inputs\symbols.txt" />
+  </ItemGroup>
 </Project>
