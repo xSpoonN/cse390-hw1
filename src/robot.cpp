@@ -13,8 +13,13 @@ using std::vector;
 using namespace std::this_thread;
 using namespace std::chrono;
 
-static inline void const printarr(const house& model, const std::pair<int, int> p, const std::pair<int, int> s, int currcharge = 0, int currsteps = 0) {
-	cout << "Charge remaining: " << currcharge << " | Steps taken: " << currsteps << endl;
+static inline void const printarr(const house& model, const std::pair<int, int> p, const std::pair<int, int> s, 
+	int currcharge = 0, int currsteps = 0, int maxsteps = -1, int maxcharge = -1) {
+	cout << "Charge remaining: " << currcharge;
+	if (maxcharge >= 0) cout << "/" << maxcharge;
+	cout << " | Steps taken: " << currsteps;
+	if (maxsteps >= 0) cout << "/" << maxsteps;
+	cout << endl;
 	for (int i = 0; i < model.size(); i++) {
 		for (int j = 0; j < model[0].size(); j++) {
 			cout << ((p.second == i && p.first == j) ? 'x' : ((s.second == i && s.first == j) ? '+' : model[i][j])) << " ";
@@ -118,7 +123,8 @@ int Robot::clean_house() {
 			cout << "Going North" << endl;
 			if (!is_wall(dir)) {
 				--current_row;
-				printarr(model, std::pair<int, int>(current_col, current_row), std::pair<int, int>(charge_col, charge_row), current_battery, current_steps);
+				printarr(model, std::pair<int, int>(current_col, current_row), std::pair<int, int>(charge_col, charge_row), 
+					current_battery, current_steps, max_steps, max_battery);
 			}
 			else {
 				cout << "Controller tried to direct us into a wall!" << endl;
@@ -128,7 +134,8 @@ int Robot::clean_house() {
 			cout << "Going South" << endl;
 			if (!is_wall(dir)) {
 				++current_row;
-				printarr(model, std::pair<int, int>(current_col, current_row), std::pair<int, int>(charge_col, charge_row), current_battery, current_steps);
+				printarr(model, std::pair<int, int>(current_col, current_row), std::pair<int, int>(charge_col, charge_row),
+					current_battery, current_steps, max_steps, max_battery);
 			}
 			else {
 				cout << "Controller tried to direct us into a wall!" << endl;
@@ -138,7 +145,8 @@ int Robot::clean_house() {
 			cout << "Going East" << endl;
 			if (!is_wall(dir)) {
 				++current_col;
-				printarr(model, std::pair<int, int>(current_col, current_row), std::pair<int, int>(charge_col, charge_row), current_battery, current_steps);
+				printarr(model, std::pair<int, int>(current_col, current_row), std::pair<int, int>(charge_col, charge_row),
+					current_battery, current_steps, max_steps, max_battery);
 			}
 			else {
 				cout << "Controller tried to direct us into a wall!" << endl;
@@ -148,17 +156,24 @@ int Robot::clean_house() {
 			cout << "Going West" << endl;
 			if (!is_wall(dir)) {
 				--current_col;
-				printarr(model, std::pair<int, int>(current_col, current_row), std::pair<int, int>(charge_col, charge_row), current_battery, current_steps);
+				printarr(model, std::pair<int, int>(current_col, current_row), std::pair<int, int>(charge_col, charge_row),
+					current_battery, current_steps, max_steps, max_battery);
 			}
 			else {
 				cout << "Controller tried to direct us into a wall!" << endl;
 			}
 			break;
 		case Direction::STAY:
-			cout << "Staying Still" << endl;
-			if (current_row == charge_row && current_col == charge_col) 
-				current_battery = std::min(current_battery + max_battery / 20, max_battery);
-			else --model[current_row][current_col];
+			/* cout << "Staying Still" << endl; */
+			if (current_row == charge_row && current_col == charge_col) {
+				cout << "Charging..." << endl;
+				current_battery = std::min(current_battery + (max_battery / 20) + 1, max_battery);
+			} else { 
+				cout << "Cleaning..." << endl;
+				--model[current_row][current_col];
+			}
+			printarr(model, std::pair<int, int>(current_col, current_row), std::pair<int, int>(charge_col, charge_row),
+				current_battery, current_steps, max_steps, max_battery);
 			break;
 		default:
 			cout << "Uhhhh NONE" << endl;

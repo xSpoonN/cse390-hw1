@@ -20,7 +20,11 @@ Controller::Controller(const Robot* rob): rob(rob), steps_from_charger(0), path_
 
 Direction Controller::get_next_step() {
 	if (rob->remaining_battery()-1 <= path_to_charger.size()) {
+		cout << "Returning to Charger" << endl;
 		cnt = 20; /* Robot takes 20 steps to fully charge */
+		if (path_to_charger.size() == 0) {
+			--cnt; return Direction::STAY;
+		}
 		Direction popped = path_to_charger.back();
 		path_to_charger.pop_back();
 		return popped;
