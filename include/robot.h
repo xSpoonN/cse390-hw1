@@ -10,7 +10,7 @@ using house = std::vector<std::vector<char>>;
 
 class Robot {
 	// Robot Data
-	Controller controller;
+	Controller* controller;
 	size_t current_battery;
 	size_t max_battery;
 	size_t current_steps;

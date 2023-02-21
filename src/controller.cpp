@@ -14,7 +14,7 @@ using std::vector;
 using std::stack;
 using std::pair;
 
-Controller::Controller(const Robot& rob): rob(rob), steps_from_charger(0), path_to_charger({}) {}
+Controller::Controller(const Robot* rob): rob(rob), steps_from_charger(0), path_to_charger({}) {}
 
 Direction Controller::get_next_step() {
 	Direction dir = naive_algorithm();
