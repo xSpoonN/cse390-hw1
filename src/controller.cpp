@@ -14,105 +14,96 @@ using std::vector;
 using std::stack;
 using std::pair;
 
+Controller::Controller(const Robot& rob): rob(rob), steps_from_charger(0), path_to_charger({}) {}
 
-struct Position { int x, y; };
-class Node {
-public:
-	int dirt;
-	Position coords;
-	vector<Node*> neighbours;
-	Direction pre;
-	Node(Position coords, Direction pre = Direction::NONE, int dirt = -1) : coords(coords), pre(pre), dirt(dirt) {}
-
-	bool operator==(const Node& r) {
-		return coords.x == r.coords.x && coords.y == r.coords.y;
+Direction Controller::get_next_step() {
+	Direction dir = naive_algorithm();
+	switch (dir) { /* Push the reverse into path_to_charger vec. */
+	case Direction::NORTH:
+		path_to_charger.push_back(Direction::SOUTH); break;
+	case Direction::EAST:
+		path_to_charger.push_back(Direction::WEST); break;
+	case Direction::SOUTH:
+		path_to_charger.push_back(Direction::NORTH); break;
+	case Direction::WEST:
+		path_to_charger.push_back(Direction::EAST); break;
 	}
+	++steps_from_charger;
+	return dir;
+}
 
-	Position nCoords() { return Position{ coords.x, coords.y - 1 }; }
-	Position eCoords() { return Position{ coords.x + 1, coords.y }; }
-	Position sCoords() { return Position{ coords.x, coords.y + 1 }; }
-	Position wCoords() { return Position{ coords.x - 1, coords.y }; }
-};
+Direction Controller::naive_algorithm() {
+	vector<Direction> choice;
+	if (rob.get_dirt_underneath() > 0) return Direction::STAY; /* If there's dirt stay still */
+	if (!rob.is_wall(Direction::NORTH)) choice.push_back(Direction::NORTH);
+	if (!rob.is_wall(Direction::EAST)) choice.push_back(Direction::EAST);
+	if (!rob.is_wall(Direction::SOUTH)) choice.push_back(Direction::SOUTH);
+	if (!rob.is_wall(Direction::WEST)) choice.push_back(Direction::WEST);
+	if (choice.size() == 0) return Direction::NONE; /* Robert is walled in. xdd */
+	return choice[std::rand() % choice.size()];
+}
 
+//struct Position { int x, y; };
+//class Node {
+//public:
+//	int dirt;
+//	Position coords;
+//	vector<Node*> neighbours;
+//	Direction pre;
+//	Node(Position coords, Direction pre = Direction::NONE, int dirt = -1) : coords(coords), pre(pre), dirt(dirt) {}
+//
+//	bool operator==(const Node& r) {
+//		return coords.x == r.coords.x && coords.y == r.coords.y;
+//	}
+//
+//	Position nCoords() { return Position{ coords.x, coords.y - 1 }; }
+//	Position eCoords() { return Position{ coords.x + 1, coords.y }; }
+//	Position sCoords() { return Position{ coords.x, coords.y + 1 }; }
+//	Position wCoords() { return Position{ coords.x - 1, coords.y }; }
+//};
 
-class Controller {
-	const Robot& rob;
-	size_t steps_from_charger;
-	vector<Direction> path_to_charger;
-public:
-	Controller(const Robot& rob): rob(rob), steps_from_charger(0), path_to_charger({}) {}
-
-	Direction get_next_step() {
-		Direction dir = naive_algorithm();
-		switch (dir) { /* Push the reverse into path_to_charger vec. */
-		case Direction::NORTH:
-			path_to_charger.push_back(Direction::SOUTH); break;
-		case Direction::EAST:
-			path_to_charger.push_back(Direction::WEST); break;
-		case Direction::SOUTH:
-			path_to_charger.push_back(Direction::NORTH); break;
-		case Direction::WEST:
-			path_to_charger.push_back(Direction::EAST); break;
-		}
-		++steps_from_charger;
-		return dir;
-	}
-
-private:
-	Direction naive_algorithm() {
-		vector<Direction> choice;
-		if (rob.get_dirt_underneath() > 0) return Direction::STAY; /* If there's dirt stay still */
-		if (!rob.is_wall(Direction::NORTH)) choice.push_back(Direction::NORTH);
-		if (!rob.is_wall(Direction::EAST)) choice.push_back(Direction::EAST);
-		if (!rob.is_wall(Direction::SOUTH)) choice.push_back(Direction::SOUTH);
-		if (!rob.is_wall(Direction::WEST)) choice.push_back(Direction::WEST);
-		if (choice.size() == 0) return Direction::NONE; /* Robert is walled in. xdd */
-		return choice[std::rand() % choice.size()];
-	}
-	void dfs(Position pos, vector<Node>& visited) {
-
-		Node start(Position{ 0, 0 });
-		Node* c = &start;
-		c->dirt = rob.get_dirt_underneath();
-		vector<Direction> choice;
-		if (!rob.is_wall(Direction::NORTH)) {
-			c->neighbours.push_back(new Node(c->nCoords(), Direction::SOUTH));
-			choice.push_back(Direction::NORTH);
-		}
-		if (!rob.is_wall(Direction::EAST)) {
-			c->neighbours.push_back(new Node(c->eCoords(), Direction::WEST));
-			choice.push_back(Direction::EAST);
-		}
-		if (!rob.is_wall(Direction::SOUTH)) {
-			c->neighbours.push_back(new Node(c->sCoords(), Direction::NORTH));
-			choice.push_back(Direction::SOUTH);
-		}
-		if (!rob.is_wall(Direction::WEST)) {
-			c->neighbours.push_back(new Node(c->wCoords(), Direction::EAST));
-			choice.push_back(Direction::WEST);
-		}
-		Direction selectD = choice[std::rand() % choice.size()];
-
-		//Node curr(pair<int, int>(0, 0));
-
-		//curr.dirt = rob.get_dirt_underneath();
-		//bool n = !rob.is_wall(Direction::NORTH);
-		//bool e = !rob.is_wall(Direction::EAST);
-		//bool s = !rob.is_wall(Direction::SOUTH);
-		//bool w = !rob.is_wall(Direction::WEST);
-
-		//if (n) {
-		//	Node n1Node(curr.nCoords(), &curr, -1);
-		//	if (visited[n1Node]) {
-
-		//	}
-
-		//}
-		// aaaauuuugggghhhhhhhhhh
-
-	}
-
-};
+//void dfs(Position pos, vector<Node>& visited) {
+//
+//	Node start(Position{ 0, 0 });
+//	Node* c = &start;
+//	c->dirt = rob.get_dirt_underneath();
+//	vector<Direction> choice;
+//	if (!rob.is_wall(Direction::NORTH)) {
+//		c->neighbours.push_back(new Node(c->nCoords(), Direction::SOUTH));
+//		choice.push_back(Direction::NORTH);
+//	}
+//	if (!rob.is_wall(Direction::EAST)) {
+//		c->neighbours.push_back(new Node(c->eCoords(), Direction::WEST));
+//		choice.push_back(Direction::EAST);
+//	}
+//	if (!rob.is_wall(Direction::SOUTH)) {
+//		c->neighbours.push_back(new Node(c->sCoords(), Direction::NORTH));
+//		choice.push_back(Direction::SOUTH);
+//	}
+//	if (!rob.is_wall(Direction::WEST)) {
+//		c->neighbours.push_back(new Node(c->wCoords(), Direction::EAST));
+//		choice.push_back(Direction::WEST);
+//	}
+//	Direction selectD = choice[std::rand() % choice.size()];
+//
+//	//Node curr(pair<int, int>(0, 0));
+//
+//	//curr.dirt = rob.get_dirt_underneath();
+//	//bool n = !rob.is_wall(Direction::NORTH);
+//	//bool e = !rob.is_wall(Direction::EAST);
+//	//bool s = !rob.is_wall(Direction::SOUTH);
+//	//bool w = !rob.is_wall(Direction::WEST);
+//
+//	//if (n) {
+//	//	Node n1Node(curr.nCoords(), &curr, -1);
+//	//	if (visited[n1Node]) {
+//
+//	//	}
+//
+//	//}
+//	// aaaauuuugggghhhhhhhhhh
+//
+//}
 
 
 ///* Simulate the Roomba*/

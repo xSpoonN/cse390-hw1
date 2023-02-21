@@ -5,7 +5,11 @@
 #include "robot.h"
 
 class Controller {
-	const Robot& robot;
+	const Robot& rob;
+	size_t steps_from_charger;
+	vector<Direction> path_to_charger;
+
+	Direction naive_algorithm();
 public:
 	Controller(const Robot&);
 	Direction get_next_step();

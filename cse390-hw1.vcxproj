@@ -98,13 +98,25 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\controller.cpp">
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">./include</AdditionalIncludeDirectories>
+    </ClCompile>
     <ClCompile Include="src\main.cpp">
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">./include</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ClCompile Include="src\robot.cpp">
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">./include</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="inputs\basic.txt" />
     <Text Include="inputs\symbols.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\controller.h" />
+    <ClInclude Include="include\directions.h" />
+    <ClInclude Include="include\robot.h" />
+    <ClInclude Include="include\symbols.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

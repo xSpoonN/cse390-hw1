@@ -1,2 +1,125 @@
-﻿  main.cpp
-  cse390-hw1.vcxproj -> C:\Users\Spoon\source\repos\cse390-hw1\x64\Debug\cse390-hw1.exe
+﻿  controller.cpp
+C:\Users\James\source\repos\cse390-hw1\include\robot.h(14,3): error C2653: 'Controller': is not a class or namespace name
+C:\Users\James\source\repos\cse390-hw1\include\robot.h(14,26): error C3646: 'controller': unknown override specifier
+C:\Users\James\source\repos\cse390-hw1\include\robot.h(14,36): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\James\source\repos\cse390-hw1\include\controller.h(11,9): error C2143: syntax error: missing ';' before '<'
+C:\Users\James\source\repos\cse390-hw1\include\controller.h(11,9): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\James\source\repos\cse390-hw1\include\controller.h(11,36): error C2238: unexpected token(s) preceding ';'
+C:\Users\James\source\repos\cse390-hw1\src\controller.cpp(17,24): error C2059: syntax error: 'const'
+C:\Users\James\source\repos\cse390-hw1\src\controller.cpp(17,47): error C2065: 'rob': undeclared identifier
+C:\Users\James\source\repos\cse390-hw1\src\controller.cpp(17,50): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\James\source\repos\cse390-hw1\src\controller.cpp(17,73): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\James\source\repos\cse390-hw1\src\controller.cpp(17,94): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\James\source\repos\cse390-hw1\src\controller.cpp(17,96): error C2059: syntax error: '{'
+C:\Users\James\source\repos\cse390-hw1\src\controller.cpp(17,96): error C2143: syntax error: missing ';' before '{'
+C:\Users\James\source\repos\cse390-hw1\src\controller.cpp(17,96): error C2447: '{': missing function header (old-style formal list?)
+C:\Users\James\source\repos\cse390-hw1\src\controller.cpp(19,23): error C2039: 'get_next_step': is not a member of 'Controller'
+C:\Users\James\source\repos\cse390-hw1\include\controller.h(7,11): message : see declaration of 'Controller'
+C:\Users\James\source\repos\cse390-hw1\src\controller.cpp(20,18): error C3861: 'naive_algorithm': identifier not found
+C:\Users\James\source\repos\cse390-hw1\src\controller.cpp(35,23): error C2039: 'naive_algorithm': is not a member of 'Controller'
+C:\Users\James\source\repos\cse390-hw1\include\controller.h(7,11): message : see declaration of 'Controller'
+  main.cpp
+C:\Users\James\source\repos\cse390-hw1\include\controller.h(9,9): error C2653: 'Robot': is not a class or namespace name
+C:\Users\James\source\repos\cse390-hw1\include\controller.h(9,21): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\James\source\repos\cse390-hw1\include\controller.h(9,21): error C2143: syntax error: missing ';' before '&'
+C:\Users\James\source\repos\cse390-hw1\include\controller.h(9,26): error C2238: unexpected token(s) preceding ';'
+C:\Users\James\source\repos\cse390-hw1\include\controller.h(11,9): error C2143: syntax error: missing ';' before '<'
+C:\Users\James\source\repos\cse390-hw1\include\controller.h(11,9): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\James\source\repos\cse390-hw1\include\controller.h(11,36): error C2238: unexpected token(s) preceding ';'
+C:\Users\James\source\repos\cse390-hw1\include\controller.h(15,20): error C2653: 'Robot': is not a class or namespace name
+C:\Users\James\source\repos\cse390-hw1\include\controller.h(15,13): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\James\source\repos\cse390-hw1\include\controller.h(15,32): error C2143: syntax error: missing ',' before '&'
+C:\Users\James\source\repos\cse390-hw1\src\main.cpp(101,13): error C2882: 'Robot': illegal use of namespace identifier in expression
+C:\Users\James\source\repos\cse390-hw1\src\main.cpp(101,8): error C2146: syntax error: missing ';' before identifier 'robot'
+C:\Users\James\source\repos\cse390-hw1\src\main.cpp(101,8): error C3861: 'robot': identifier not found
+C:\Users\James\source\repos\cse390-hw1\src\main.cpp(102,2): error C2065: 'robot': undeclared identifier
+  robot.cpp
+C:\Users\James\source\repos\cse390-hw1\include\controller.h(9,9): error C2653: 'Robot': is not a class or namespace name
+C:\Users\James\source\repos\cse390-hw1\include\controller.h(9,21): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\James\source\repos\cse390-hw1\include\controller.h(9,21): error C2143: syntax error: missing ';' before '&'
+C:\Users\James\source\repos\cse390-hw1\include\controller.h(9,26): error C2238: unexpected token(s) preceding ';'
+C:\Users\James\source\repos\cse390-hw1\include\controller.h(11,9): error C2143: syntax error: missing ';' before '<'
+C:\Users\James\source\repos\cse390-hw1\include\controller.h(11,9): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\James\source\repos\cse390-hw1\include\controller.h(11,36): error C2238: unexpected token(s) preceding ';'
+C:\Users\James\source\repos\cse390-hw1\include\controller.h(15,20): error C2653: 'Robot': is not a class or namespace name
+C:\Users\James\source\repos\cse390-hw1\include\controller.h(15,13): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\James\source\repos\cse390-hw1\include\controller.h(15,32): error C2143: syntax error: missing ',' before '&'
+C:\Users\James\source\repos\cse390-hw1\src\robot.cpp(23,19): error C2143: syntax error: missing ')' before '&'
+C:\Users\James\source\repos\cse390-hw1\src\robot.cpp(23,19): error C2143: syntax error: missing ';' before '&'
+C:\Users\James\source\repos\cse390-hw1\src\robot.cpp(23,19): error C2377: 'house': redefinition; typedef cannot be overloaded with any other symbol
+C:\Users\James\source\repos\cse390-hw1\include\robot.h(9,7): message : see declaration of 'house'
+C:\Users\James\source\repos\cse390-hw1\src\robot.cpp(23,14): error C2512: 'Robot::Robot': no appropriate default constructor available
+C:\Users\James\source\repos\cse390-hw1\include\robot.h(12,8): message : see declaration of 'Robot::Robot'
+C:\Users\James\source\repos\cse390-hw1\src\robot.cpp(23,26): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\James\source\repos\cse390-hw1\src\robot.cpp(23,26): error C2530: 'model': references must be initialized
+C:\Users\James\source\repos\cse390-hw1\src\robot.cpp(23,46): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\James\source\repos\cse390-hw1\src\robot.cpp(23,46): error C2377: 'size_t': redefinition; typedef cannot be overloaded with any other symbol
+C:\Users\James\source\repos\cse390-hw1\src\robot.cpp : message : see declaration of 'size_t'
+C:\Users\James\source\repos\cse390-hw1\src\robot.cpp(23,35): error C2146: syntax error: missing ';' before identifier 'max_battery'
+C:\Users\James\source\repos\cse390-hw1\src\robot.cpp(23,100): error C2059: syntax error: ')'
+C:\Users\James\source\repos\cse390-hw1\src\robot.cpp(24,16): error C2355: 'this': can only be referenced inside non-static member functions or non-static data member initializers
+C:\Users\James\source\repos\cse390-hw1\src\robot.cpp(24,20): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\James\source\repos\cse390-hw1\src\robot.cpp(24,39): error C2065: 'max_battery': undeclared identifier
+C:\Users\James\source\repos\cse390-hw1\src\robot.cpp(24,50): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\James\source\repos\cse390-hw1\src\robot.cpp(24,65): error C2065: 'max_battery': undeclared identifier
+C:\Users\James\source\repos\cse390-hw1\src\robot.cpp(24,76): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\James\source\repos\cse390-hw1\src\robot.cpp(24,94): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\James\source\repos\cse390-hw1\src\robot.cpp(24,107): error C2065: 'max_steps': undeclared identifier
+C:\Users\James\source\repos\cse390-hw1\src\robot.cpp(24,116): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\James\source\repos\cse390-hw1\src\robot.cpp(24,130): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\James\source\repos\cse390-hw1\src\robot.cpp(24,119): error C2040: 'model': 'int' differs in levels of indirection from 'int &'
+C:\Users\James\source\repos\cse390-hw1\src\robot.cpp(25,19): error C3861: 'calculate_dirt': identifier not found
+C:\Users\James\source\repos\cse390-hw1\src\robot.cpp(25,40): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\James\source\repos\cse390-hw1\src\robot.cpp(25,55): error C2065: 'starting_row': undeclared identifier
+C:\Users\James\source\repos\cse390-hw1\src\robot.cpp(25,67): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\James\source\repos\cse390-hw1\src\robot.cpp(25,82): error C2065: 'starting_col': undeclared identifier
+C:\Users\James\source\repos\cse390-hw1\src\robot.cpp(25,94): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\James\source\repos\cse390-hw1\src\robot.cpp(25,96): error C2059: syntax error: '{'
+C:\Users\James\source\repos\cse390-hw1\src\robot.cpp(25,96): error C2143: syntax error: missing ';' before '{'
+C:\Users\James\source\repos\cse390-hw1\src\robot.cpp(25,96): error C2447: '{': missing function header (old-style formal list?)
+C:\Users\James\source\repos\cse390-hw1\src\robot.cpp(30,15): error C2039: 'remaining_battery': is not a member of 'Robot'
+C:\Users\James\source\repos\cse390-hw1\include\robot.h(11,11): message : see declaration of 'Robot'
+C:\Users\James\source\repos\cse390-hw1\src\robot.cpp(30,32): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\James\source\repos\cse390-hw1\src\robot.cpp(30,1): error C2086: 'int size_t': redefinition
+C:\Users\James\source\repos\cse390-hw1\src\robot.cpp(23,28): message : see declaration of 'size_t'
+C:\Users\James\source\repos\cse390-hw1\src\robot.cpp(30,32): error C2146: syntax error: missing ';' before identifier 'remaining_battery'
+C:\Users\James\source\repos\cse390-hw1\src\robot.cpp(30,41): error C2143: syntax error: missing ';' before '{'
+C:\Users\James\source\repos\cse390-hw1\src\robot.cpp(30,41): error C2447: '{': missing function header (old-style formal list?)
+C:\Users\James\source\repos\cse390-hw1\src\robot.cpp(37,15): error C2039: 'get_dirt_underneath': is not a member of 'Robot'
+C:\Users\James\source\repos\cse390-hw1\include\robot.h(11,11): message : see declaration of 'Robot'
+C:\Users\James\source\repos\cse390-hw1\src\robot.cpp(37,34): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\James\source\repos\cse390-hw1\src\robot.cpp(37,1): error C2086: 'int size_t': redefinition
+C:\Users\James\source\repos\cse390-hw1\src\robot.cpp(23,28): message : see declaration of 'size_t'
+C:\Users\James\source\repos\cse390-hw1\src\robot.cpp(37,34): error C2146: syntax error: missing ';' before identifier 'get_dirt_underneath'
+C:\Users\James\source\repos\cse390-hw1\src\robot.cpp(37,43): error C2143: syntax error: missing ';' before '{'
+C:\Users\James\source\repos\cse390-hw1\src\robot.cpp(37,43): error C2447: '{': missing function header (old-style formal list?)
+C:\Users\James\source\repos\cse390-hw1\src\robot.cpp(55,13): error C2039: 'is_wall': is not a member of 'Robot'
+C:\Users\James\source\repos\cse390-hw1\include\robot.h(11,11): message : see declaration of 'Robot'
+C:\Users\James\source\repos\cse390-hw1\src\robot.cpp(55,48): error C2270: 'is_wall': modifiers not allowed on nonmember functions
+C:\Users\James\source\repos\cse390-hw1\src\robot.cpp(57,33): error C3861: 'inbounds': identifier not found
+C:\Users\James\source\repos\cse390-hw1\src\robot.cpp(58,24): error C2109: subscript requires array or pointer type
+C:\Users\James\source\repos\cse390-hw1\src\robot.cpp(59,24): error C2109: subscript requires array or pointer type
+C:\Users\James\source\repos\cse390-hw1\src\robot.cpp(60,33): error C3861: 'inbounds': identifier not found
+C:\Users\James\source\repos\cse390-hw1\src\robot.cpp(61,24): error C2109: subscript requires array or pointer type
+C:\Users\James\source\repos\cse390-hw1\src\robot.cpp(62,24): error C2109: subscript requires array or pointer type
+C:\Users\James\source\repos\cse390-hw1\src\robot.cpp(63,34): error C3861: 'inbounds': identifier not found
+C:\Users\James\source\repos\cse390-hw1\src\robot.cpp(64,28): error C2109: subscript requires array or pointer type
+C:\Users\James\source\repos\cse390-hw1\src\robot.cpp(65,28): error C2109: subscript requires array or pointer type
+C:\Users\James\source\repos\cse390-hw1\src\robot.cpp(66,34): error C3861: 'inbounds': identifier not found
+C:\Users\James\source\repos\cse390-hw1\src\robot.cpp(67,28): error C2109: subscript requires array or pointer type
+C:\Users\James\source\repos\cse390-hw1\src\robot.cpp(68,28): error C2109: subscript requires array or pointer type
+C:\Users\James\source\repos\cse390-hw1\src\robot.cpp(77,12): error C2039: 'clean_house': is not a member of 'Robot'
+C:\Users\James\source\repos\cse390-hw1\include\robot.h(11,11): message : see declaration of 'Robot'
+C:\Users\James\source\repos\cse390-hw1\src\robot.cpp(134,13): error C2039: 'inbounds': is not a member of 'Robot'
+C:\Users\James\source\repos\cse390-hw1\include\robot.h(11,11): message : see declaration of 'Robot'
+C:\Users\James\source\repos\cse390-hw1\src\robot.cpp(134,42): error C2270: 'inbounds': modifiers not allowed on nonmember functions
+C:\Users\James\source\repos\cse390-hw1\src\robot.cpp(135,39): error C2109: subscript requires array or pointer type
+C:\Users\James\source\repos\cse390-hw1\src\robot.cpp(137,15): error C2039: 'calculate_dirt': is not a member of 'Robot'
+C:\Users\James\source\repos\cse390-hw1\include\robot.h(11,11): message : see declaration of 'Robot'
+C:\Users\James\source\repos\cse390-hw1\src\robot.cpp(137,29): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\James\source\repos\cse390-hw1\src\robot.cpp(137,1): error C2086: 'int size_t': redefinition
+C:\Users\James\source\repos\cse390-hw1\src\robot.cpp(23,28): message : see declaration of 'size_t'
+C:\Users\James\source\repos\cse390-hw1\src\robot.cpp(137,29): error C2146: syntax error: missing ';' before identifier 'calculate_dirt'
+C:\Users\James\source\repos\cse390-hw1\src\robot.cpp(137,56): error C2143: syntax error: missing ';' before '{'
+C:\Users\James\source\repos\cse390-hw1\src\robot.cpp(137,56): error C2447: '{': missing function header (old-style formal list?)
+  Generating Code...
