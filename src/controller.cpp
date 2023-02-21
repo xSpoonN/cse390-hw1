@@ -1,22 +1,94 @@
 #include <vector>
+#include <stack>
+#include <iterator>
+#include <random>
+#include <string>
+#include <algorithm>
+#include <iostream>
 
 #include "controller.h"
 #include "robot.h"
+#include "directions.h"
 
 using std::vector;
+using std::stack;
+using std::pair;
+
+
+struct Position { int x, y; };
+class Node {
+public:
+	int dirt;
+	Position coords;
+	vector<Node*> neighbours;
+	Direction pre;
+	Node(Position coords, Direction pre = Direction::NONE, int dirt = -1) : coords(coords), pre(pre), dirt(dirt) {}
+
+	bool operator==(const Node& r) {
+		return coords.x == r.coords.x && coords.y == r.coords.y;
+	}
+
+	Position nCoords() { return Position{ coords.x, coords.y - 1 }; }
+	Position eCoords() { return Position{ coords.x + 1, coords.y }; }
+	Position sCoords() { return Position{ coords.x, coords.y + 1 }; }
+	Position wCoords() { return Position{ coords.x - 1, coords.y }; }
+};
+
 
 class Controller {
-	const Robot& robot;
+	const Robot& rob;
 	size_t steps_from_charger;
 	vector<Direction> path_to_charger;
 public:
-	Controller::Controller(const Robot& robot)
-		: robot(robot), steps_from_charger(0), path_to_charger({}) {}
+	Controller(const Robot& rob): rob(rob), steps_from_charger(0), path_to_charger({}) {}
 
 	Direction get_next_step() {
-		// Todo: implement basic decision-making
+		//return dfs();
 	}
+	void dfs(Position pos, vector<Node>& visited) {
+
+		Node start(Position{ 0, 0 });
+		Node* c = &start;
+		c->dirt = rob.get_dirt_underneath();
+		vector<Direction> choice;
+		if (!rob.is_wall(Direction::NORTH)) {
+			c->neighbours.push_back(new Node(c->nCoords(), Direction::SOUTH));
+			choice.push_back(Direction::NORTH);
+		}
+		if (!rob.is_wall(Direction::EAST)) {
+			c->neighbours.push_back(new Node(c->eCoords(), Direction::WEST));
+			choice.push_back(Direction::EAST);
+		}
+		if (!rob.is_wall(Direction::SOUTH)) {
+			c->neighbours.push_back(new Node(c->sCoords(), Direction::NORTH));
+			choice.push_back(Direction::SOUTH);
+		}
+		if (!rob.is_wall(Direction::WEST)) {
+			c->neighbours.push_back(new Node(c->wCoords(), Direction::EAST));
+			choice.push_back(Direction::WEST);
+		}
+		Direction selectD = choice[std::rand() % choice.size()];
+
+		//Node curr(pair<int, int>(0, 0));
+
+		//curr.dirt = rob.get_dirt_underneath();
+		//bool n = !rob.is_wall(Direction::NORTH);
+		//bool e = !rob.is_wall(Direction::EAST);
+		//bool s = !rob.is_wall(Direction::SOUTH);
+		//bool w = !rob.is_wall(Direction::WEST);
+
+		//if (n) {
+		//	Node n1Node(curr.nCoords(), &curr, -1);
+		//	if (visited[n1Node]) {
+
+		//	}
+
+		//}
+
+	}
+
 };
+
 
 ///* Simulate the Roomba*/
 //std::pair<int, int> p = s; /// Represents the position of the Roomba.
