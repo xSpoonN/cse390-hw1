@@ -34,11 +34,11 @@ Direction Controller::get_next_step() {
 
 Direction Controller::naive_algorithm() {
 	vector<Direction> choice;
-	if (rob.get_dirt_underneath() > 0) return Direction::STAY; /* If there's dirt stay still */
-	if (!rob.is_wall(Direction::NORTH)) choice.push_back(Direction::NORTH);
-	if (!rob.is_wall(Direction::EAST)) choice.push_back(Direction::EAST);
-	if (!rob.is_wall(Direction::SOUTH)) choice.push_back(Direction::SOUTH);
-	if (!rob.is_wall(Direction::WEST)) choice.push_back(Direction::WEST);
+	if (rob->get_dirt_underneath() > 0) return Direction::STAY; /* If there's dirt stay still */
+	if (!rob->is_wall(Direction::NORTH)) choice.push_back(Direction::NORTH);
+	if (!rob->is_wall(Direction::EAST)) choice.push_back(Direction::EAST);
+	if (!rob->is_wall(Direction::SOUTH)) choice.push_back(Direction::SOUTH);
+	if (!rob->is_wall(Direction::WEST)) choice.push_back(Direction::WEST);
 	if (choice.size() == 0) return Direction::NONE; /* Robert is walled in. xdd */
 	return choice[std::rand() % choice.size()];
 }

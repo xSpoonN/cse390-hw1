@@ -4,9 +4,10 @@
 #include <vector>
 
 #include "directions.h"
-#include "robot.h"
 
 using std::vector;
+
+class Robot;
 
 class Controller {
 	const Robot* rob;

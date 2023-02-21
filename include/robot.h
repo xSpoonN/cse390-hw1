@@ -4,9 +4,10 @@
 #include <vector>
 
 #include "directions.h"
-#include "controller.h"
 
 using house = std::vector<std::vector<char>>;
+
+class Controller;
 
 class Robot {
 	// Robot Data
