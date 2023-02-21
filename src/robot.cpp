@@ -81,7 +81,7 @@ int Robot::clean_house() {
 		switch (dir) {
 		case Direction::NORTH:
 			if (!is_wall(dir)) {
-				++current_col;
+				++current_row;
 				printarr(model, std::pair<int, int>(current_row, current_col), current_battery, current_steps);
 			}
 			else {
@@ -90,7 +90,7 @@ int Robot::clean_house() {
 			break;
 		case Direction::SOUTH:
 			if (!is_wall(dir)) {
-				++current_col;
+				--current_row;
 				printarr(model, std::pair<int, int>(current_row, current_col), current_battery, current_steps);
 			}
 			else {
@@ -108,7 +108,7 @@ int Robot::clean_house() {
 			break;
 		case Direction::WEST:
 			if (!is_wall(dir)) {
-				++current_col;
+				--current_col;
 				printarr(model, std::pair<int, int>(current_row, current_col), current_battery, current_steps);
 			}
 			else {
@@ -117,7 +117,6 @@ int Robot::clean_house() {
 			break;
 		case Direction::STAY:
 			if (!is_wall(dir)) {
-				++current_col;
 				printarr(model, std::pair<int, int>(current_row, current_col), current_battery, current_steps);
 			}
 			else {
