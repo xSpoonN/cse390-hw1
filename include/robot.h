@@ -33,7 +33,7 @@ public:
 	Robot(house& model, size_t max_battery, size_t max_steps, int starting_row, int starting_col);
 	~Robot();
 	int clean_house();
-	int get_dirt_underneath() const;
+	size_t get_dirt_underneath() const;
 	bool is_wall(Direction) const;
 	size_t remaining_battery() const;
 };

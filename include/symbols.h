@@ -23,7 +23,7 @@ namespace Sym {
 	}
 
 	inline bool is_clean(char ch) {
-		return ch == DIRT0 || ch == CHARGER;
+		return ch == DIRT0;
 	}
 
 	inline int get_dirt_level(char ch) {
@@ -38,7 +38,7 @@ namespace Sym {
 			case DIRT7: return 7;
 			case DIRT8: return 8;
 			case DIRT9: return 9;
-			default: return -1;  // Todo: what to do in case of error?
+			default: return -1;
 		}
 	}
 
@@ -61,15 +61,15 @@ namespace Sym {
 
 	inline void decrement_dirt(char& ch) {
 		switch (ch) {
-			case DIRT9: ch = DIRT8;
-			case DIRT8: ch = DIRT7;
-			case DIRT7: ch = DIRT6;
-			case DIRT6: ch = DIRT5;
-			case DIRT5: ch = DIRT4;
-			case DIRT4: ch = DIRT3;
-			case DIRT3: ch = DIRT2;
-			case DIRT2: ch = DIRT1;
-			case DIRT1: ch = DIRT0;
+			case DIRT9: ch = DIRT8; break;
+			case DIRT8: ch = DIRT7; break;
+			case DIRT7: ch = DIRT6; break;
+			case DIRT6: ch = DIRT5; break;
+			case DIRT5: ch = DIRT4; break;
+			case DIRT4: ch = DIRT3; break;
+			case DIRT3: ch = DIRT2; break;
+			case DIRT2: ch = DIRT1; break;
+			case DIRT1: ch = DIRT0; break;
 		}
 	}
 

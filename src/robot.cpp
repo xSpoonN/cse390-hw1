@@ -47,9 +47,9 @@ size_t Robot::remaining_battery() const {
 /*
 * Gets the amount of dirt this robot is currently sitting on.
 */
-int Robot::get_dirt_underneath() const {
-	// Todo: error checking on return value (can be -1, returns size_t)
-	return Sym::get_dirt_level(model[current_row][current_col]);
+size_t Robot::get_dirt_underneath() const {
+	int dirt = Sym::get_dirt_level(model[current_row][current_col]);
+	return dirt > 0 ? dirt : 0;
 }
 
 /*
@@ -147,14 +147,13 @@ int Robot::clean_house() {
 		/* Print current matrix to console */
 		printarr(model, std::pair<int, int>(current_col, current_row), std::pair<int, int>(charge_col, charge_row),
 			current_battery, current_steps, max_steps, max_battery);
-		sleep_for(milliseconds(500));
+		sleep_for(milliseconds(800));
 	}
 	return 1;
 }
 
 inline bool Robot::inbounds(int x, int y) const {
-	//cout << "Inbounds check " << x << y << endl;
-	return !(x < 0 || y < 0 || x >= model[0].size() || y >= model.size());
+	return x >= 0 && y >= 0 && x < model[0].size() && y < model.size();
 }
 
 size_t Robot::calculate_dirt(const house& model) const {
