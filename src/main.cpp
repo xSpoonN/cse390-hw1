@@ -83,7 +83,7 @@ int main(int argc, char** argv) {
 		vector<char> rowvec;
 		for (auto c : line) {
 			rowvec.push_back(c);
-			if (c == sym_char(Symbol::CHARGER)) {
+			if (c == Sym::CHARGER) {
 				if (start.first == -1 && start.second == -1)
 					start = std::make_pair(row, col);
 				else {

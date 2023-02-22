@@ -26,11 +26,27 @@ namespace Sym {
 		return ch == DIRT0;
 	}
 
+	inline int get_dirt_level(char ch) {
+		if (is_clean(ch)) return 0;
+		switch (ch) {
+			case DIRT1: return 1;
+			case DIRT2: return 2;
+			case DIRT3: return 3;
+			case DIRT4: return 4;
+			case DIRT5: return 5;
+			case DIRT6: return 6;
+			case DIRT7: return 7;
+			case DIRT8: return 8;
+			case DIRT9: return 9;
+			default: return -1;  // Todo: what to do in case of error?
+		}
+	}
+
 	inline bool is_valid(char ch) {
 		return ch == NONE
 			|| ch == WALL
 			|| ch == CHARGER
-			|| ch == ROBOT
+			|| ch == ROBOTSYM
 			|| ch == DIRT0
 			|| ch == DIRT1
 			|| ch == DIRT2
@@ -43,22 +59,39 @@ namespace Sym {
 			|| ch == DIRT9;
 	}
 
-	inline char decrement_dirt(char ch) {
+	inline void decrement_dirt(char& ch) {
 		switch (ch) {
-			case DIRT9: return DIRT8;
-			case DIRT8: return DIRT7;
-			case DIRT7: return DIRT6;
-			case DIRT6: return DIRT5;
-			case DIRT5: return DIRT4;
-			case DIRT4: return DIRT3;
-			case DIRT3: return DIRT2;
-			case DIRT2: return DIRT1;
-			case DIRT1: return DIRT0;
-			default: return NONE;
+			case DIRT9: ch = DIRT8;
+			case DIRT8: ch = DIRT7;
+			case DIRT7: ch = DIRT6;
+			case DIRT6: ch = DIRT5;
+			case DIRT5: ch = DIRT4;
+			case DIRT4: ch = DIRT3;
+			case DIRT3: ch = DIRT2;
+			case DIRT2: ch = DIRT1;
+			case DIRT1: ch = DIRT0;
 		}
 	}
 
+	// Working copy, use if above doesn't wind up working.
+	/*inline char decrement_dirt(char ch) {
+		switch (ch) {
+		case DIRT9: return DIRT8;
+		case DIRT8: return DIRT7;
+		case DIRT7: return DIRT6;
+		case DIRT6: return DIRT5;
+		case DIRT5: return DIRT4;
+		case DIRT4: return DIRT3;
+		case DIRT3: return DIRT2;
+		case DIRT2: return DIRT1;
+		case DIRT1: return DIRT0;
+		default: return NONE;
+		}
+	}*/
+
 }
+
+// The graveyard:
 
 //#define SYM_NONE ' '
 //#define SYM_WALL '.'

@@ -19,6 +19,7 @@ using std::endl;
 Controller::Controller(const Robot* rob): rob(rob), steps_from_charger(0), path_to_charger({}), cnt(0) {}
 
 Direction Controller::get_next_step() {
+	// Todo: add comments
 	if (rob->remaining_battery()-1 <= path_to_charger.size()) {
 		cout << "Returning to Charger" << endl;
 		cnt = 20; /* Robot takes 20 steps to fully charge */

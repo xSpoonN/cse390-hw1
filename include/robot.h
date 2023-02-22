@@ -30,11 +30,12 @@ class Robot {
 	size_t calculate_dirt(const house&) const;
 public:
 	Robot(house&, size_t, size_t, int, int);
+	~Robot();
 	int clean_house();
 	size_t get_dirt_underneath() const;
 	bool is_wall(Direction) const;
 	size_t remaining_battery() const;
-	size_t full_battery() const;
+//	size_t full_battery() const;  // Robot shouldn't have this in its public API
 };
 
 #endif
