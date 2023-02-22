@@ -5,6 +5,7 @@
 #include <string>
 #include <algorithm>
 #include <iostream>
+#include <ctime>
 
 #include "controller.h"
 #include "robot.h"
@@ -17,7 +18,9 @@ using std::cout;
 using std::endl;
 
 Controller::Controller(const Robot* rob) : rob(rob), charger_dist(pair<size_t, size_t>(0, 0)), path_to_charger({})
-	, starting_battery(rob->remaining_battery()), charging(false), pathing_to_charger(false) {}
+	, starting_battery(rob->remaining_battery()), charging(false), pathing_to_charger(false) {
+	std::srand(static_cast<unsigned int>(std::time(nullptr)));
+}
 
 Direction Controller::get_next_step() {
 	/*
@@ -101,7 +104,7 @@ Direction Controller::naive_algorithm() {
 		//cout << "West" << endl;
 		choice.push_back(Direction::WEST);
 	}
-	if (choice.size() == 0) return Direction::NONE; /* Robert is walled in. xdd */
+	if (choice.empty()) return Direction::NONE; /* Robert is walled in. xdd */
 	return choice[std::rand() % choice.size()];
 }
 

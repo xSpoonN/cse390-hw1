@@ -93,7 +93,7 @@ bool Robot::is_wall(Direction direction) const {
 * Attempts to clean the house this robot was initialized with.
 */
 int Robot::clean_house(std::ofstream& output_file) {
-	while (remaining_dirt > 0 && current_steps < max_steps && current_battery > 0) {
+	while (current_steps < max_steps && current_battery > 0) {
 		--current_battery;
 		++current_steps;
 		/* Update current position based on direction received */
@@ -138,6 +138,7 @@ int Robot::clean_house(std::ofstream& output_file) {
 				output_file << " | Cleaning dirt level " << Sym::get_dirt_level(model[current_row][current_col]);
 				cout << "Cleaning..." << endl;
 				Sym::decrement_dirt(model[current_row][current_col]);
+				--remaining_dirt;
 			}
 			else if (model[current_row][current_col] != Sym::CHARGER) {
 				cout << "Told to stay still without cleaning/charging!" << endl;
@@ -150,6 +151,10 @@ int Robot::clean_house(std::ofstream& output_file) {
 			output_file << " | Charging (" << current_battery << "/" << max_battery << ") -> (";
 			current_battery = std::min(current_battery + (max_battery / 20) + 1, max_battery);
 			output_file << current_battery << "/" << max_battery << ")";
+			if (remaining_dirt == 0) {
+				output_file << endl;
+				break;
+			}
 		}
 		output_file << endl;
 		/* Print current matrix to console */
