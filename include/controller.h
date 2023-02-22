@@ -6,14 +6,16 @@
 #include "directions.h"
 
 using std::vector;
+using std::pair;
 
 class Robot;
 
 class Controller {
 	const Robot* rob;
-	size_t steps_from_charger;
+	pair<size_t, size_t> charger_dist;
 	vector<Direction> path_to_charger;
-	int cnt;
+	const size_t starting_battery;
+	bool charging;
 
 	Direction naive_algorithm();
 public:

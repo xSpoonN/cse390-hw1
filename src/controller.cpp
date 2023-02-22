@@ -16,33 +16,63 @@ using std::pair;
 using std::cout;
 using std::endl;
 
-Controller::Controller(const Robot* rob): rob(rob), steps_from_charger(0), path_to_charger({}), cnt(0) {}
+Controller::Controller(const Robot* rob): rob(rob), charger_dist(pair<size_t, size_t> (0, 0)), path_to_charger({})
+	, starting_battery(rob->remaining_battery()), charging(false) {}
 
 Direction Controller::get_next_step() {
-	// Todo: add comments
-	if (rob->remaining_battery()-1 <= path_to_charger.size()) {
-		cout << "Returning to Charger" << endl;
-		cnt = 20; /* Robot takes 20 steps to fully charge */
-		if (path_to_charger.size() == 0) {
-			--cnt; return Direction::STAY;
+	/*
+	* Todo: implement following note (possibly in robot.cpp):
+	* "Note that we assume that charging happens according to the position of the robot at the end of the step."
+	* "So if the robot steps in the docking and immediately out [it will have gained 1 "Stay"'s worth of charge]
+	*/
+	
+	/* Check if we want to go back to the charger (low battery) */
+	if (rob->remaining_battery() <= path_to_charger.size()) {
+		cout << "Returning to Charger..." << endl;
+		/* Check if we have arrived at the charger */
+		if (charger_dist.first == 0 && charger_dist.second == 0) {
+			path_to_charger.clear();  // Clear list in case we arrived "early"
+			goto br;
 		}
+		/* If we have not yet arrived, backtrack to charger */
 		Direction popped = path_to_charger.back();
 		path_to_charger.pop_back();
+		switch (popped) {
+			case Direction::EAST: ++charger_dist.first; break;
+			case Direction::WEST: --charger_dist.first; break;
+			case Direction::SOUTH: ++charger_dist.second; break;
+			case Direction::NORTH: --charger_dist.second; break;
+		}
 		return popped;
-	};
-	if (cnt-- > 0) return Direction::STAY; /* Recharge the robot. */
+	}
+	br:
+	/* Charge until we hit our starting battery */
+	if (charging) {
+		if (rob->remaining_battery() < starting_battery) 
+			return Direction::STAY;
+		charging = false;
+	}
+
+	/* Proceed to pick a direction with the given algorithm */
 	Direction dir = naive_algorithm();
 	switch (dir) { /* Push the reverse into path_to_charger vec. */
 	case Direction::NORTH:
-		path_to_charger.push_back(Direction::SOUTH); break;
+		path_to_charger.push_back(Direction::SOUTH);
+		--charger_dist.second;
+		break;
 	case Direction::EAST:
-		path_to_charger.push_back(Direction::WEST); break;
+		path_to_charger.push_back(Direction::WEST);
+		++charger_dist.first;
+		break;
 	case Direction::SOUTH:
-		path_to_charger.push_back(Direction::NORTH); break;
+		path_to_charger.push_back(Direction::NORTH);
+		++charger_dist.second;
+		break;
 	case Direction::WEST:
-		path_to_charger.push_back(Direction::EAST); break;
+		path_to_charger.push_back(Direction::EAST);
+		--charger_dist.first;
+		break;
 	}
-	++steps_from_charger;
 	return dir;
 }
 
@@ -50,7 +80,7 @@ Direction Controller::naive_algorithm() {
 	vector<Direction> choice;
 	if (rob->get_dirt_underneath() > 0) return Direction::STAY; /* If there's dirt stay still */
 	if (!rob->is_wall(Direction::NORTH)) {
-		/*cout << "North" << endl;*/
+		//cout << "North" << endl;
 		choice.push_back(Direction::NORTH);
 	}
 	if (!rob->is_wall(Direction::EAST)) {

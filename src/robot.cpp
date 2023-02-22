@@ -45,14 +45,6 @@ size_t Robot::remaining_battery() const {
 }
 
 /*
-* Gets the max battery on this robot.
-* Todo: possibly remove
-*/
-//size_t Robot::full_battery() const {
-//	return max_battery;
-//}
-
-/*
 * Gets the amount of dirt this robot is currently sitting on.
 */
 size_t Robot::get_dirt_underneath() const {
@@ -102,7 +94,7 @@ bool Robot::is_wall(Direction direction) const {
 int Robot::clean_house() {
 	while (current_steps < max_steps && remaining_dirt > 0 && current_battery > 0) {
 		++current_steps;
-		--current_battery;  // Todo: should this be here when it's charging?
+		--current_battery;
 		Direction dir = controller->get_next_step();
 		//cout << static_cast<int> (dir) << endl;
 		switch (dir) {
@@ -151,7 +143,7 @@ int Robot::clean_house() {
 			}
 			break;
 		case Direction::STAY:
-			/* cout << "Staying Still" << endl; */
+			// cout << "Staying Still" << endl;
 			if (current_row == charge_row && current_col == charge_col) {
 				cout << "Charging..." << endl;
 				current_battery = std::min(current_battery + (max_battery / 20) + 1, max_battery);
@@ -167,6 +159,8 @@ int Robot::clean_house() {
 			cout << "Uhhhh NONE" << endl;
 			break;
 		}
+		// Todo: move charging logic here
+
 		sleep_for(milliseconds(500));
 	}
 	return 1;
@@ -176,6 +170,7 @@ inline bool Robot::inbounds(int x, int y) const {
 	//cout << "Inbounds check " << x << y << endl;
 	return !(x < 0 || y < 0 || x >= model[0].size() || y >= model.size());
 }
+
 size_t Robot::calculate_dirt(const house& model) const {
 	size_t cnt = 0;
 	for (int i = 0; i < model.size(); i++) {
