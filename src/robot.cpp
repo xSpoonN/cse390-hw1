@@ -47,7 +47,7 @@ size_t Robot::remaining_battery() const {
 /*
 * Gets the amount of dirt this robot is currently sitting on.
 */
-size_t Robot::get_dirt_underneath() const {
+int Robot::get_dirt_underneath() const {
 	// Todo: error checking on return value (can be -1, returns size_t)
 	return Sym::get_dirt_level(model[current_row][current_col]);
 }
@@ -92,75 +92,61 @@ bool Robot::is_wall(Direction direction) const {
 * Attempts to clean the house this robot was initialized with.
 */
 int Robot::clean_house() {
-	while (current_steps < max_steps && remaining_dirt > 0 && current_battery > 0) {
-		++current_steps;
-		--current_battery;
+	while (remaining_dirt > 0 && current_steps++ < max_steps && current_battery-- > 0) {
+		/* Update current position based on direction received */
 		Direction dir = controller->get_next_step();
-		//cout << static_cast<int> (dir) << endl;
+		cout << "Direction: " << dirstr(dir) << endl;
 		switch (dir) {
 		case Direction::NORTH:
-			cout << "Going North" << endl;
 			if (!is_wall(dir)) {
 				--current_row;
-				printarr(model, std::pair<int, int>(current_col, current_row), std::pair<int, int>(charge_col, charge_row), 
-					current_battery, current_steps, max_steps, max_battery);
 			}
 			else {
 				cout << "Controller tried to direct us into a wall!" << endl;
 			}
 			break;
 		case Direction::SOUTH:
-			cout << "Going South" << endl;
 			if (!is_wall(dir)) {
 				++current_row;
-				printarr(model, std::pair<int, int>(current_col, current_row), std::pair<int, int>(charge_col, charge_row),
-					current_battery, current_steps, max_steps, max_battery);
 			}
 			else {
 				cout << "Controller tried to direct us into a wall!" << endl;
 			}
 			break;
 		case Direction::EAST:
-			cout << "Going East" << endl;
 			if (!is_wall(dir)) {
 				++current_col;
-				printarr(model, std::pair<int, int>(current_col, current_row), std::pair<int, int>(charge_col, charge_row),
-					current_battery, current_steps, max_steps, max_battery);
 			}
 			else {
 				cout << "Controller tried to direct us into a wall!" << endl;
 			}
 			break;
 		case Direction::WEST:
-			cout << "Going West" << endl;
 			if (!is_wall(dir)) {
 				--current_col;
-				printarr(model, std::pair<int, int>(current_col, current_row), std::pair<int, int>(charge_col, charge_row),
-					current_battery, current_steps, max_steps, max_battery);
 			}
 			else {
 				cout << "Controller tried to direct us into a wall!" << endl;
 			}
 			break;
 		case Direction::STAY:
-			// cout << "Staying Still" << endl;
-			if (current_row == charge_row && current_col == charge_col) {
-				cout << "Charging..." << endl;
-				current_battery = std::min(current_battery + (max_battery / 20) + 1, max_battery);
-			} else { 
+			if (Sym::get_dirt_level(model[current_row][current_col]) > 0) {
 				cout << "Cleaning..." << endl;
-				// Todo: test this, if it doesn't correctly decrement dirt, replace its implementation in symbols.h
 				Sym::decrement_dirt(model[current_row][current_col]);
 			}
-			printarr(model, std::pair<int, int>(current_col, current_row), std::pair<int, int>(charge_col, charge_row),
-				current_battery, current_steps, max_steps, max_battery);
-			break;
-		default:
-			cout << "Uhhhh NONE" << endl;
+			else if (model[current_row][current_col] != Sym::CHARGER) {
+				cout << "Told to stay still without cleaning/charging!!" << endl;
+			}
 			break;
 		}
-		// Todo: move charging logic here
-
+		/* If at the dock, begin charging */
+		if (current_row == charge_row && current_col == charge_col) {
+			cout << "Charging..." << endl;
+			current_battery = std::min(current_battery + (max_battery / 20) + 1, max_battery);
+		}
+		/* Print current matrix to console */
+		printarr(model, std::pair<int, int>(current_col, current_row), std::pair<int, int>(charge_col, charge_row),
+			current_battery, current_steps, max_steps, max_battery);
 		sleep_for(milliseconds(500));
 	}
 	return 1;

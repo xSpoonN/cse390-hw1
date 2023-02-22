@@ -78,7 +78,7 @@ int main(int argc, char** argv) {
 	/* Read input into a "house" */
 	house model;
 	int row = 0, col = 0;
-	std::pair<int, int> start(-1,-1); /// Charger/Start Position Todo: move this into robot.cpp
+	std::pair<int, int> start(-1,-1); // Charger/Start Position Todo: move this into robot.cpp
 	while (std::getline(file, line)) {
 		vector<char> rowvec;
 		for (auto c : line) {

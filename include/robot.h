@@ -22,6 +22,7 @@ class Robot {
 	size_t remaining_dirt;
 	int current_row;
 	int current_col;
+	// Todo: remove these
 	int charge_row;
 	int charge_col;
 
@@ -32,7 +33,7 @@ public:
 	Robot(house& model, size_t max_battery, size_t max_steps, int starting_row, int starting_col);
 	~Robot();
 	int clean_house();
-	size_t get_dirt_underneath() const;
+	int get_dirt_underneath() const;
 	bool is_wall(Direction) const;
 	size_t remaining_battery() const;
 };

@@ -23,7 +23,7 @@ namespace Sym {
 	}
 
 	inline bool is_clean(char ch) {
-		return ch == DIRT0;
+		return ch == DIRT0 || ch == CHARGER;
 	}
 
 	inline int get_dirt_level(char ch) {
