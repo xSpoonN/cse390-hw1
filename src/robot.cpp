@@ -93,7 +93,9 @@ bool Robot::is_wall(Direction direction) const {
 * Attempts to clean the house this robot was initialized with.
 */
 int Robot::clean_house(std::ofstream& output_file) {
-	while (remaining_dirt > 0 && current_steps++ < max_steps && current_battery-- > 0) {
+	while (remaining_dirt > 0 && current_steps < max_steps && current_battery > 0) {
+		--current_battery;
+		++current_steps;
 		/* Update current position based on direction received */
 		Direction dir = controller->get_next_step();
 		// cout << "Direction: " << dirstr(dir) << endl;
@@ -146,7 +148,7 @@ int Robot::clean_house(std::ofstream& output_file) {
 		if (current_row == charge_row && current_col == charge_col) {
 			cout << "Charging..." << endl;
 			output_file << " | Charging (" << current_battery << "/" << max_battery << ") -> (";
-			current_battery = std::min(current_battery + (max_battery / 20) + 1, max_battery);  // ++current_battery here? infinite loop if max battery < 20
+			current_battery = std::min(current_battery + (max_battery / 20) + 1, max_battery);
 			output_file << current_battery << "/" << max_battery << ")";
 		}
 		output_file << endl;

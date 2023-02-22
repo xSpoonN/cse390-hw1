@@ -27,7 +27,7 @@ Direction Controller::get_next_step() {
 	*/
 	
 	/* Check if we want to go back to the charger (low battery) */
-	if (pathing_to_charger || rob->remaining_battery() < path_to_charger.size()) {
+	if (pathing_to_charger || rob->remaining_battery() - 1 < path_to_charger.size()) {
 		cout << "Returning to Charger..." << endl;
 		pathing_to_charger = true;
 		/* Check if we have arrived at the charger */
@@ -52,8 +52,7 @@ Direction Controller::get_next_step() {
 	/* Charge until we hit our starting battery */
 	if (charging) {
 		br:
-		cout << "Charging state " << rob->remaining_battery() << " " << starting_battery << endl;
-		// cout << "Controller: Charging" << endl;
+		// cout << "Charging state " << rob->remaining_battery() << " " << starting_battery << endl;
 		if (rob->remaining_battery() < starting_battery - 1) 
 			return Direction::STAY;
 		charging = false;
