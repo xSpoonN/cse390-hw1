@@ -12,11 +12,11 @@ class Controller;
 
 class Robot {
 	// Robot Data
-	Controller* controller;
 	size_t current_battery;
 	size_t max_battery;
 	size_t current_steps;
 	size_t max_steps;
+	Controller* controller;
 
 	// House Metadata
 	house& model;

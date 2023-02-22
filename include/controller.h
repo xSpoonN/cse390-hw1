@@ -16,6 +16,7 @@ class Controller {
 	vector<Direction> path_to_charger;
 	const size_t starting_battery;
 	bool charging;
+	bool pathing_to_charger;
 
 	Direction naive_algorithm();
 public:

@@ -16,8 +16,8 @@ using std::pair;
 using std::cout;
 using std::endl;
 
-Controller::Controller(const Robot* rob): rob(rob), charger_dist(pair<size_t, size_t> (0, 0)), path_to_charger({})
-	, starting_battery(rob->remaining_battery()), charging(false) {}
+Controller::Controller(const Robot* rob) : rob(rob), charger_dist(pair<size_t, size_t>(0, 0)), path_to_charger({})
+	, starting_battery(rob->remaining_battery()), charging(false), pathing_to_charger(false) {}
 
 Direction Controller::get_next_step() {
 	/*
@@ -27,12 +27,15 @@ Direction Controller::get_next_step() {
 	*/
 	
 	/* Check if we want to go back to the charger (low battery) */
-	if (!charging && rob->remaining_battery() <= path_to_charger.size()) {
+	if (pathing_to_charger || rob->remaining_battery() < path_to_charger.size()) {
 		cout << "Returning to Charger..." << endl;
+		pathing_to_charger = true;
 		/* Check if we have arrived at the charger */
 		if (charger_dist.first == 0 && charger_dist.second == 0) {
 			path_to_charger.clear();  // Clear list in case we arrived "early"
+			cout << "Charging = true" << endl;
 			charging = true;
+			pathing_to_charger = false;
 			goto br;
 		}
 		/* If we have not yet arrived, backtrack to charger */
@@ -46,11 +49,12 @@ Direction Controller::get_next_step() {
 		}
 		return popped;
 	}
-	br:
 	/* Charge until we hit our starting battery */
 	if (charging) {
+		br:
+		cout << "Charging state " << rob->remaining_battery() << " " << starting_battery << endl;
 		// cout << "Controller: Charging" << endl;
-		if (rob->remaining_battery() < starting_battery) 
+		if (rob->remaining_battery() < starting_battery - 1) 
 			return Direction::STAY;
 		charging = false;
 	}

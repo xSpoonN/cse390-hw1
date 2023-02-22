@@ -31,8 +31,8 @@ static inline void const printarr(const house& model, const std::pair<int, int> 
 
 
 Robot::Robot(house& model, size_t max_battery, size_t max_steps, int starting_row, int starting_col)
-	: controller(new Controller(this)), current_battery(max_battery), max_battery(max_battery), current_steps(0), max_steps(max_steps), model(model)
-	, remaining_dirt(calculate_dirt()), current_row(starting_row), current_col(starting_col), charge_row(starting_row), charge_col(starting_col) {}
+	: current_battery(max_battery), max_battery(max_battery), current_steps(0), max_steps(max_steps), controller(new Controller(this))
+	, model(model), remaining_dirt(calculate_dirt()), current_row(starting_row), current_col(starting_col), charge_row(starting_row), charge_col(starting_col) {}
 
 Robot::~Robot() {
 	delete controller;
@@ -146,14 +146,14 @@ int Robot::clean_house(std::ofstream& output_file) {
 		if (current_row == charge_row && current_col == charge_col) {
 			cout << "Charging..." << endl;
 			output_file << " | Charging (" << current_battery << "/" << max_battery << ") -> (";
-			current_battery = std::min(current_battery + (max_battery / 20) + 1, max_battery);
+			current_battery = std::min(current_battery + (max_battery / 20) + 1, max_battery);  // ++current_battery here? infinite loop if max battery < 20
 			output_file << current_battery << "/" << max_battery << ")";
 		}
 		output_file << endl;
 		/* Print current matrix to console */
 		printarr(model, std::pair<int, int>(current_col, current_row), std::pair<int, int>(charge_col, charge_row),
 			current_battery, current_steps, max_steps, max_battery);
-		sleep_for(milliseconds(800));
+		//sleep_for(milliseconds(800));
 	}
 	output_file << "Total steps: " << current_steps << endl;
 	output_file << "Dirt left: " << calculate_dirt() << endl;
