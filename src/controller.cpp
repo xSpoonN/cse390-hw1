@@ -27,11 +27,12 @@ Direction Controller::get_next_step() {
 	*/
 	
 	/* Check if we want to go back to the charger (low battery) */
-	if (rob->remaining_battery() <= path_to_charger.size()) {
+	if (!charging && rob->remaining_battery() <= path_to_charger.size()) {
 		cout << "Returning to Charger..." << endl;
 		/* Check if we have arrived at the charger */
 		if (charger_dist.first == 0 && charger_dist.second == 0) {
 			path_to_charger.clear();  // Clear list in case we arrived "early"
+			charging = true;
 			goto br;
 		}
 		/* If we have not yet arrived, backtrack to charger */
@@ -48,7 +49,7 @@ Direction Controller::get_next_step() {
 	br:
 	/* Charge until we hit our starting battery */
 	if (charging) {
-		cout << "Controller: Charging" << endl;
+		// cout << "Controller: Charging" << endl;
 		if (rob->remaining_battery() < starting_battery) 
 			return Direction::STAY;
 		charging = false;
@@ -79,7 +80,7 @@ Direction Controller::get_next_step() {
 
 Direction Controller::naive_algorithm() {
 	vector<Direction> choice;
-	cout << "Dirt level: " << rob->get_dirt_underneath() << endl;
+	// cout << "Dirt level: " << rob->get_dirt_underneath() << endl;
 	if (rob->get_dirt_underneath() > 0) return Direction::STAY; /* If there's dirt stay still */
 	if (!rob->is_wall(Direction::NORTH)) {
 		//cout << "North" << endl;

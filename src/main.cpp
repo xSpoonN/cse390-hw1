@@ -98,8 +98,15 @@ int main(int argc, char** argv) {
 	printarr(model, start, charge, steps);
 	cout << start.first << ", " << start.second << endl;
 
-	Robot robot(model, charge, steps, start.first, start.second);
-	robot.clean_house();
+	std::ofstream outputFile("./outputs/output.txt");
+	if (!outputFile.is_open()) {
+		cout << "Invalid output file" << endl;
+		return EXIT_FAILURE;
+	}
 
+	Robot robot(model, charge, steps, start.first, start.second);
+	robot.clean_house(outputFile);
+
+	outputFile.close();
 	return EXIT_SUCCESS;
 }
