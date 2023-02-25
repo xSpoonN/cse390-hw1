@@ -96,9 +96,28 @@ int main(int argc, char** argv) {
 			model[i].push_back(Sym::WALL);
 		}
 	}
-	cout << model.size() << endl;
-	cout << model[0].size() << endl;
-	cout << start.first << ", " << start.second << endl;
+	/* Left */
+	for (int i = 0; i < model.size(); i++) {
+		if (!Sym::is_wall(model[i][0])) {
+			for (int j = 0; j < model.size(); j++) {
+				model[j].insert(model[j].begin(), Sym::WALL);
+			}
+			++start.second;
+		}
+		if (!Sym::is_wall(model[i][model[0].size()-1])) {
+			for (int j = 0; j < model.size(); j++) {
+				model[j].push_back(Sym::WALL);
+			}
+		}
+	}
+	for (int i = 0; i < model[0].size(); i++) {
+		if (!Sym::is_wall(model[0][i])) {
+			model.insert(model.begin(), vector<char>(model[0].size(), Sym::WALL));
+		}
+		if (!Sym::is_wall(model[model.size()-1][i])) {
+			model.push_back(vector<char>(model[0].size(), Sym::WALL));
+		}
+	}
 	printarr(model, start, charge, steps);
 	if (start.first == -1 && start.second == -1) { err("Start position not defined!"); }
 
