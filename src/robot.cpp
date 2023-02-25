@@ -14,7 +14,7 @@ using std::vector;
 using namespace std::this_thread;
 using namespace std::chrono;
 
-static bool debug = false;
+static bool debug = true;
 
 static inline void const printarr(const house& model, const std::pair<int, int> p, const std::pair<int, int> s, 
 	int currcharge = 0, int currsteps = 0, int maxsteps = -1, int maxcharge = -1) {
@@ -25,7 +25,7 @@ static inline void const printarr(const house& model, const std::pair<int, int> 
 	cout << endl;
 	for (int i = 0; i < model.size(); i++) {
 		for (int j = 0; j < model[0].size(); j++) {
-			cout << ((p.second == i && p.first == j) ? 'x' : ((s.second == i && s.first == j) ? '+' : model[i][j])) << " ";
+			cout << ((p.first == i && p.second == j) ? 'x' : ((s.first == i && s.second == j) ? '+' : model[i][j])) << " ";
 		}
 		cout << endl;
 	}
@@ -148,11 +148,11 @@ int Robot::clean_house(std::ofstream& output_file) {
 		}
 		output_file << endl;
 		/* Print current matrix to console */
-		//if (debug) {
-		//	printarr(model, std::pair<int, int>(current_col, current_row), std::pair<int, int>(charge_col, charge_row),
-		//		current_battery, current_steps, max_steps, max_battery);
-		//	sleep_for(milliseconds(400));
-		//}
+		if (debug) {
+			printarr(model, std::pair<int, int>(current_row, current_col), std::pair<int, int>(current_row, current_col),
+				current_battery, current_steps, max_steps, max_battery);
+			sleep_for(milliseconds(400));
+		}
 	}
 	output_file << "Total steps: " << current_steps << endl;
 	output_file << "Dirt left: " << calculate_dirt() << endl;

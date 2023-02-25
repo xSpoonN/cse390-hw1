@@ -20,7 +20,7 @@ static inline void const printarr(const house & model, const std::pair<int, int>
 	cout << "Charge remaining: " << currcharge << " | Steps remaining: " << currsteps << endl;
 	for (int i = 0; i < model.size(); i++) {
 		for (int j = 0; j < model[0].size(); j++) {
-			cout << ((p.second == i && p.first == j) ? 'x' : model[i][j]) << " ";
+			cout << ((p.first == i && p.second == j) ? 'x' : model[i][j]) << " ";
 		}
 		cout << endl;
 	}
@@ -70,11 +70,16 @@ int main(int argc, char** argv) {
 	vector<int> rowlen; int maxlen = 0;
 	while (std::getline(file, line)) {
 		vector<char> rowvec;
+		cout << "row: " << row << endl;
 		for (auto c : line) {
+			cout << "col: " << col << endl;
 			if (!Sym::is_valid(c)) { err("Unexpected char in input: " << c); }
 			rowvec.push_back(c);
 			if (c == Sym::CHARGER) {
-				if (start.first == -1 && start.second == -1) start = std::make_pair(row, col);
+				if (start.first == -1 && start.second == -1) {
+					start = std::make_pair(row, col);
+					cout << "Making start: " << row << ", " << col << endl;
+				}
 				else { err("Only one start position may be defined!"); }
 			}
 			++col;
@@ -84,12 +89,16 @@ int main(int argc, char** argv) {
 		if (rowvec.size() > maxlen) maxlen = rowvec.size();
 		++row; col = 0;
 	}
+
 	/* Fills in ragged models */
 	for (int i = 0; i < rowlen.size(); i++) {
 		for (int j = 0; j < maxlen - rowlen[i]; j++) {
 			model[i].push_back(Sym::WALL);
 		}
 	}
+	cout << model.size() << endl;
+	cout << model[0].size() << endl;
+	cout << start.first << ", " << start.second << endl;
 	printarr(model, start, charge, steps);
 	if (start.first == -1 && start.second == -1) { err("Start position not defined!"); }
 
