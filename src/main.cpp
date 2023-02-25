@@ -89,7 +89,7 @@ int main(int argc, char** argv) {
 			model[i].push_back(Sym::WALL);
 		}
 	}
-	// printarr(model, start, charge, steps);
+	printarr(model, start, charge, steps);
 	if (start.first == -1 && start.second == -1) { err("Start position not defined!"); }
 
 	std::ofstream outputFile("output.txt", std::fstream::trunc);
@@ -102,5 +102,7 @@ int main(int argc, char** argv) {
 	robot.clean_house(outputFile);
 
 	outputFile.close();
+	cout << "Success" << endl;
+	printarr(model, start, charge, steps);
 	return EXIT_SUCCESS;
 }

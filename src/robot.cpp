@@ -61,12 +61,16 @@ size_t Robot::get_dirt_underneath() const {
 bool Robot::is_wall(Direction direction) const {
 	switch (direction) {
 	case Direction::WEST:
+		cout << "West: ";
 		return !inbounds(current_row, current_col - 1) || Sym::is_wall(model[current_row][current_col - 1]);
 	case Direction::EAST:
+		cout << "East: ";
 		return !inbounds(current_row, current_col + 1) || Sym::is_wall(model[current_row][current_col + 1]);
 	case Direction::SOUTH:
+		cout << "South: ";
 		return !inbounds(current_row + 1, current_col) || Sym::is_wall(model[current_row + 1][current_col]);
 	case Direction::NORTH:
+		cout << "North: ";
 		return !inbounds(current_row - 1, current_col) || Sym::is_wall(model[current_row - 1][current_col]);
 	default:
 		return true;
@@ -157,8 +161,11 @@ int Robot::clean_house(std::ofstream& output_file) {
 	return current_steps;
 }
 
-inline bool Robot::inbounds(int x, int y) const {
-	return x >= 0 && y >= 0 && x < model[0].size() && y < model.size();
+inline bool Robot::inbounds(int row, int col) const {
+	cout << "Current row: " << current_row << " | Current col: " << current_col << endl;
+	cout << "row: " << row << " | col: " << col << endl;
+	cout << "1:" << (row >= 0) << " 2:" << (col >= 0) << " 3:" << (row < model.size()) << " 4:" << (col < model[0].size()) << endl;
+	return row >= 0 && col >= 0 && row < model.size() && col < model[0].size();
 }
 
 size_t Robot::calculate_dirt() const {
