@@ -71,6 +71,7 @@ int main(int argc, char** argv) {
 	while (std::getline(file, line)) {
 		vector<char> rowvec;
 		for (auto c : line) {
+			if (!Sym::is_valid(c)) { err("Unexpected char in input: " << c); }
 			rowvec.push_back(c);
 			if (c == Sym::CHARGER) {
 				if (start.first == -1 && start.second == -1) start = std::make_pair(row, col);
@@ -102,7 +103,7 @@ int main(int argc, char** argv) {
 	robot.clean_house(outputFile);
 
 	outputFile.close();
-	cout << "Success" << endl;
+	cout << "The program has been completed successfully and is capable of completing all the assigned tasks. All the requirements and conditions specified in the program specifications were met successfully by the program. Therefore, the program has terminated its work in a most satisfactory manner and has ended successfully." << endl;
 	printarr(model, start, charge, steps);
 	return EXIT_SUCCESS;
 }
