@@ -70,15 +70,12 @@ int main(int argc, char** argv) {
 	vector<int> rowlen; int maxlen = 0;
 	while (std::getline(file, line)) {
 		vector<char> rowvec;
-		cout << "row: " << row << endl;
 		for (auto c : line) {
-			cout << "col: " << col << endl;
 			if (!Sym::is_valid(c)) { err("Unexpected char in input: " << c); }
 			rowvec.push_back(c);
 			if (c == Sym::CHARGER) {
 				if (start.first == -1 && start.second == -1) {
 					start = std::make_pair(row, col);
-					cout << "Making start: " << row << ", " << col << endl;
 				}
 				else { err("Only one start position may be defined!"); }
 			}
@@ -113,6 +110,7 @@ int main(int argc, char** argv) {
 	for (int i = 0; i < model[0].size(); i++) {
 		if (!Sym::is_wall(model[0][i])) {
 			model.insert(model.begin(), vector<char>(model[0].size(), Sym::WALL));
+			++start.first;
 		}
 		if (!Sym::is_wall(model[model.size()-1][i])) {
 			model.push_back(vector<char>(model[0].size(), Sym::WALL));

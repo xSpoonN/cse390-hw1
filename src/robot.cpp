@@ -14,10 +14,9 @@ using std::vector;
 using namespace std::this_thread;
 using namespace std::chrono;
 
-static bool debug = true;
+static bool debug = false;
 
-static inline void const printarr(const house& model, const std::pair<int, int> p, const std::pair<int, int> s, 
-	int currcharge = 0, int currsteps = 0, int maxsteps = -1, int maxcharge = -1) {
+static inline void const printarr(const house& model, const std::pair<int, int> p, int currcharge = 0, int currsteps = 0, int maxsteps = -1, int maxcharge = -1) {
 	cout << "Charge remaining: " << currcharge;
 	if (maxcharge >= 0) cout << "/" << maxcharge;
 	cout << " | Steps taken: " << currsteps;
@@ -25,7 +24,7 @@ static inline void const printarr(const house& model, const std::pair<int, int> 
 	cout << endl;
 	for (int i = 0; i < model.size(); i++) {
 		for (int j = 0; j < model[0].size(); j++) {
-			cout << ((p.first == i && p.second == j) ? 'x' : ((s.first == i && s.second == j) ? '+' : model[i][j])) << " ";
+			cout << ((p.first == i && p.second == j) ? 'x' : model[i][j]) << " ";
 		}
 		cout << endl;
 	}
@@ -34,7 +33,7 @@ static inline void const printarr(const house& model, const std::pair<int, int> 
 
 Robot::Robot(house& model, size_t max_battery, size_t max_steps, int starting_row, int starting_col)
 	: current_battery(max_battery), max_battery(max_battery), current_steps(0), max_steps(max_steps), controller(new Controller(this))
-	, model(model), remaining_dirt(calculate_dirt()), current_row(starting_row), current_col(starting_col), charge_row(starting_row), charge_col(starting_col) {}
+	, model(model), remaining_dirt(calculate_dirt()), current_row(starting_row), current_col(starting_col) {}
 
 Robot::~Robot() {
 	delete controller;
@@ -62,16 +61,16 @@ bool Robot::is_wall(Direction direction) const {
 	switch (direction) {
 	case Direction::WEST:
 		//cout << "West: ";
-		return !inbounds(current_row, current_col - 1) || Sym::is_wall(model[current_row][current_col - 1]);
+		return /*!inbounds(current_row, current_col - 1) ||*/ Sym::is_wall(model[current_row][current_col - 1]);
 	case Direction::EAST:
 		//cout << "East: ";
-		return !inbounds(current_row, current_col + 1) || Sym::is_wall(model[current_row][current_col + 1]);
+		return /*!inbounds(current_row, current_col + 1) ||*/ Sym::is_wall(model[current_row][current_col + 1]);
 	case Direction::SOUTH:
 		//cout << "South: ";
-		return !inbounds(current_row + 1, current_col) || Sym::is_wall(model[current_row + 1][current_col]);
+		return /*!inbounds(current_row + 1, current_col) ||*/ Sym::is_wall(model[current_row + 1][current_col]);
 	case Direction::NORTH:
 		//cout << "North: ";
-		return !inbounds(current_row - 1, current_col) || Sym::is_wall(model[current_row - 1][current_col]);
+		return /*!inbounds(current_row - 1, current_col) ||*/ Sym::is_wall(model[current_row - 1][current_col]);
 	default:
 		return true;
 	}
@@ -136,7 +135,7 @@ int Robot::clean_house(std::ofstream& output_file) {
 			break;
 		}
 		/* If at the dock, begin charging */
-		if (current_row == charge_row && current_col == charge_col) {
+		if (model[current_row][current_col] == Sym::CHARGER) {  // Todo: add charger_dist?
 			if (debug) cout << "Charging..." << endl;
 			output_file << " | Charging (" << current_battery << "/" << max_battery << ") -> (";
 			current_battery = std::min(current_battery + (max_battery / 20) + 1, max_battery);
@@ -149,8 +148,7 @@ int Robot::clean_house(std::ofstream& output_file) {
 		output_file << endl;
 		/* Print current matrix to console */
 		if (debug) {
-			printarr(model, std::pair<int, int>(current_row, current_col), std::pair<int, int>(current_row, current_col),
-				current_battery, current_steps, max_steps, max_battery);
+			printarr(model, std::pair<int, int>(current_row, current_col), current_battery, current_steps, max_steps, max_battery);
 			sleep_for(milliseconds(400));
 		}
 	}
@@ -161,12 +159,12 @@ int Robot::clean_house(std::ofstream& output_file) {
 	return current_steps;
 }
 
-inline bool Robot::inbounds(int row, int col) const {
-	//cout << "Current row: " << current_row << " | Current col: " << current_col << endl;
-	//cout << "row: " << row << " | col: " << col << endl;
-	//cout << "1:" << (row >= 0) << " 2:" << (col >= 0) << " 3:" << (row < model.size()) << " 4:" << (col < model[0].size()) << endl;
-	return row >= 0 && col >= 0 && row < model.size() && col < model[0].size();
-}
+//inline bool Robot::inbounds(int row, int col) const {
+//	//cout << "Current row: " << current_row << " | Current col: " << current_col << endl;
+//	//cout << "row: " << row << " | col: " << col << endl;
+//	//cout << "1:" << (row >= 0) << " 2:" << (col >= 0) << " 3:" << (row < model.size()) << " 4:" << (col < model[0].size()) << endl;
+//	return row >= 0 && col >= 0 && row < model.size() && col < model[0].size();
+//}
 
 size_t Robot::calculate_dirt() const {
 	size_t cnt = 0;
