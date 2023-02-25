@@ -116,6 +116,7 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="inputs\basic.txt" />
+    <Text Include="inputs\ragged.txt" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\controller.h" />

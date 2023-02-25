@@ -160,7 +160,7 @@ int Robot::clean_house(std::ofstream& output_file) {
 		/* Print current matrix to console */
 		printarr(model, std::pair<int, int>(current_col, current_row), std::pair<int, int>(charge_col, charge_row),
 			current_battery, current_steps, max_steps, max_battery);
-		//sleep_for(milliseconds(800));
+		sleep_for(milliseconds(400));
 	}
 	output_file << "Total steps: " << current_steps << endl;
 	output_file << "Dirt left: " << calculate_dirt() << endl;
