@@ -89,12 +89,12 @@ int main(int argc, char** argv) {
 			model[i].push_back(Sym::WALL);
 		}
 	}
-	printarr(model, start, charge, steps);
+	// printarr(model, start, charge, steps);
 	if (start.first == -1 && start.second == -1) { err("Start position not defined!"); }
 
-	std::ofstream outputFile("./outputs/output.txt");
+	std::ofstream outputFile("output.txt", std::fstream::trunc);
 	if (!outputFile.is_open()) {
-		cout << "Invalid output file" << endl;
+		cout << "Failed to open output file" << endl;
 		return EXIT_FAILURE;
 	}
 

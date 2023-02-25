@@ -14,6 +14,8 @@ using std::vector;
 using namespace std::this_thread;
 using namespace std::chrono;
 
+static bool debug = false;
+
 static inline void const printarr(const house& model, const std::pair<int, int> p, const std::pair<int, int> s, 
 	int currcharge = 0, int currsteps = 0, int maxsteps = -1, int maxcharge = -1) {
 	cout << "Charge remaining: " << currcharge;
@@ -57,32 +59,14 @@ size_t Robot::get_dirt_underneath() const {
 * Checks if there is a wall in the given direction relative to the robot.
 */
 bool Robot::is_wall(Direction direction) const {
-	// Todo: cleanup or update debug statements
-	//bool asd, ase, asf;
 	switch (direction) {
 	case Direction::WEST:
-		/*asd = !inbounds(current_row, current_col - 1);
-		ase = model[current_row][current_col - 1] == sym_char(Symbol::WALL);
-		asf = model[current_row][current_col - 1] == sym_char(Symbol::NONE);
-		cout << "West" << asd << ase << asf << endl;*/
 		return !inbounds(current_row, current_col - 1) || Sym::is_wall(model[current_row][current_col - 1]);
 	case Direction::EAST:
-		/*asd = !inbounds(current_row, current_col + 1);
-		ase = model[current_row][current_col + 1] == sym_char(Symbol::WALL);
-		asf = model[current_row][current_col + 1] == sym_char(Symbol::NONE);
-		cout << "East" << asd << ase << asf << endl;*/
 		return !inbounds(current_row, current_col + 1) || Sym::is_wall(model[current_row][current_col + 1]);
 	case Direction::SOUTH:
-		/*asd = !inbounds(current_row + 1, current_col);
-		ase = model[current_row + 1][current_col] == sym_char(Symbol::WALL);
-		asf = model[current_row + 1][current_col] == sym_char(Symbol::NONE);
-		cout << "Soup" << asd << ase << asf << endl;*/
 		return !inbounds(current_row + 1, current_col) || Sym::is_wall(model[current_row + 1][current_col]);
-	case Direction::NORTH: 
-		/*asd = !inbounds(current_row - 1, current_col);
-		ase = model[current_row - 1][current_col] == sym_char(Symbol::WALL);
-		asf = model[current_row - 1][current_col] == sym_char(Symbol::NONE);
-		cout << "nerRth" << asd << ase << asf << endl;*/
+	case Direction::NORTH:
 		return !inbounds(current_row - 1, current_col) || Sym::is_wall(model[current_row - 1][current_col]);
 	default:
 		return true;
@@ -91,6 +75,8 @@ bool Robot::is_wall(Direction direction) const {
 
 /*
 * Attempts to clean the house this robot was initialized with.
+* 
+* @return the amount of steps taken
 */
 int Robot::clean_house(std::ofstream& output_file) {
 	while (current_steps < max_steps && current_battery > 0) {
@@ -98,14 +84,14 @@ int Robot::clean_house(std::ofstream& output_file) {
 		++current_steps;
 		/* Update current position based on direction received */
 		Direction dir = controller->get_next_step();
-		// cout << "Direction: " << dirstr(dir) << endl;
+		if (debug) cout << "Direction: " << dirstr(dir) << endl;
 		output_file << "Step " << current_steps << ": " << dirstr(dir);
 		switch (dir) {
 		case Direction::NORTH:
 			if (!is_wall(dir)) {
 				--current_row;
 			}
-			else {
+			else if(debug) {
 				cout << "Controller tried to direct us into a wall!" << endl;
 			}
 			break;
@@ -113,7 +99,7 @@ int Robot::clean_house(std::ofstream& output_file) {
 			if (!is_wall(dir)) {
 				++current_row;
 			}
-			else {
+			else if (debug) {
 				cout << "Controller tried to direct us into a wall!" << endl;
 			}
 			break;
@@ -121,7 +107,7 @@ int Robot::clean_house(std::ofstream& output_file) {
 			if (!is_wall(dir)) {
 				++current_col;
 			}
-			else {
+			else if (debug) {
 				cout << "Controller tried to direct us into a wall!" << endl;
 			}
 			break;
@@ -129,25 +115,25 @@ int Robot::clean_house(std::ofstream& output_file) {
 			if (!is_wall(dir)) {
 				--current_col;
 			}
-			else {
+			else if (debug) {
 				cout << "Controller tried to direct us into a wall!" << endl;
 			}
 			break;
 		case Direction::STAY:
 			if (Sym::get_dirt_level(model[current_row][current_col]) > 0) {
 				output_file << " | Cleaning dirt level " << Sym::get_dirt_level(model[current_row][current_col]);
-				cout << "Cleaning..." << endl;
+				if (debug) cout << "Cleaning..." << endl;
 				Sym::decrement_dirt(model[current_row][current_col]);
 				--remaining_dirt;
 			}
 			else if (model[current_row][current_col] != Sym::CHARGER) {
-				cout << "Told to stay still without cleaning/charging!" << endl;
+				if (debug) cout << "Told to stay still without cleaning/charging!" << endl;
 			}
 			break;
 		}
 		/* If at the dock, begin charging */
 		if (current_row == charge_row && current_col == charge_col) {
-			cout << "Charging..." << endl;
+			if (debug) cout << "Charging..." << endl;
 			output_file << " | Charging (" << current_battery << "/" << max_battery << ") -> (";
 			current_battery = std::min(current_battery + (max_battery / 20) + 1, max_battery);
 			output_file << current_battery << "/" << max_battery << ")";
@@ -158,15 +144,17 @@ int Robot::clean_house(std::ofstream& output_file) {
 		}
 		output_file << endl;
 		/* Print current matrix to console */
-		printarr(model, std::pair<int, int>(current_col, current_row), std::pair<int, int>(charge_col, charge_row),
-			current_battery, current_steps, max_steps, max_battery);
-		sleep_for(milliseconds(400));
+		//if (debug) {
+		//	printarr(model, std::pair<int, int>(current_col, current_row), std::pair<int, int>(charge_col, charge_row),
+		//		current_battery, current_steps, max_steps, max_battery);
+		//	sleep_for(milliseconds(400));
+		//}
 	}
 	output_file << "Total steps: " << current_steps << endl;
 	output_file << "Dirt left: " << calculate_dirt() << endl;
 	output_file << "Dead battery: " << (current_battery == 0 ? "True" : "False") << endl;
 	output_file << "Mission success: " << (calculate_dirt() == 0 && model[current_row][current_col] == Sym::CHARGER ? "True" : "False") << endl;
-	return 1;
+	return current_steps;
 }
 
 inline bool Robot::inbounds(int x, int y) const {

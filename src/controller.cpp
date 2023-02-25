@@ -22,21 +22,15 @@ Controller::Controller(const Robot* rob) : rob(rob), charger_dist(pair<size_t, s
 	std::srand(static_cast<unsigned int>(std::time(nullptr)));
 }
 
-Direction Controller::get_next_step() {
-	/*
-	* Todo: implement following note (possibly in robot.cpp):
-	* "Note that we assume that charging happens according to the position of the robot at the end of the step."
-	* "So if the robot steps in the docking and immediately out [it will have gained 1 "Stay"'s worth of charge]
-	*/
-	
+Direction Controller::get_next_step() {	
 	/* Check if we want to go back to the charger (low battery) */
 	if (pathing_to_charger || rob->remaining_battery() - 1 < path_to_charger.size()) {
-		cout << "Returning to Charger..." << endl;
+		// cout << "Returning to Charger..." << endl;
 		pathing_to_charger = true;
 		/* Check if we have arrived at the charger */
 		if (charger_dist.first == 0 && charger_dist.second == 0) {
 			path_to_charger.clear();  // Clear list in case we arrived "early"
-			cout << "Charging = true" << endl;
+			// cout << "Charging = true" << endl;
 			charging = true;
 			pathing_to_charger = false;
 			goto br;
@@ -55,7 +49,6 @@ Direction Controller::get_next_step() {
 	/* Charge until we hit our starting battery */
 	if (charging) {
 		br:
-		// cout << "Charging state " << rob->remaining_battery() << " " << starting_battery << endl;
 		if (rob->remaining_battery() < starting_battery - 1) 
 			return Direction::STAY;
 		charging = false;
@@ -86,22 +79,17 @@ Direction Controller::get_next_step() {
 
 Direction Controller::naive_algorithm() {
 	vector<Direction> choice;
-	// cout << "Dirt level: " << rob->get_dirt_underneath() << endl;
 	if (rob->get_dirt_underneath() > 0) return Direction::STAY; /* If there's dirt stay still */
 	if (!rob->is_wall(Direction::NORTH)) {
-		//cout << "North" << endl;
 		choice.push_back(Direction::NORTH);
 	}
 	if (!rob->is_wall(Direction::EAST)) {
-		//cout << "East" << endl;
 		choice.push_back(Direction::EAST);
 	}
 	if (!rob->is_wall(Direction::SOUTH)) {
-		//cout << "Sth" << endl;
 		choice.push_back(Direction::SOUTH);
 	}
 	if (!rob->is_wall(Direction::WEST)) {
-		//cout << "West" << endl;
 		choice.push_back(Direction::WEST);
 	}
 	if (choice.empty()) return Direction::NONE; /* Robert is walled in. xdd */

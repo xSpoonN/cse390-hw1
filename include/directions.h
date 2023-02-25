@@ -11,6 +11,7 @@ inline std::string dirstr(Direction dir) {
 		case Direction::SOUTH: return "South";
 		case Direction::WEST: return "West";
 		case Direction::STAY: return "Stay";
+		default: return "?";
 	}
 }
 
