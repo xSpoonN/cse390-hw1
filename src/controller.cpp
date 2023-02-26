@@ -58,18 +58,22 @@ Direction Controller::get_next_step() {
 	case Direction::NORTH:
 		path_to_charger.push_back(Direction::SOUTH);
 		--charger_dist.second;
+		if (charger_dist.first == 0 && charger_dist.second == 0) path_to_charger.clear();
 		break;
 	case Direction::EAST:
 		path_to_charger.push_back(Direction::WEST);
 		++charger_dist.first;
+		if (charger_dist.first == 0 && charger_dist.second == 0) path_to_charger.clear();
 		break;
 	case Direction::SOUTH:
 		path_to_charger.push_back(Direction::NORTH);
 		++charger_dist.second;
+		if (charger_dist.first == 0 && charger_dist.second == 0) path_to_charger.clear();
 		break;
 	case Direction::WEST:
 		path_to_charger.push_back(Direction::EAST);
 		--charger_dist.first;
+		if (charger_dist.first == 0 && charger_dist.second == 0) path_to_charger.clear();
 		break;
 	}
 	return dir;

@@ -14,7 +14,7 @@ class Controller {
 	const Robot* rob;
 	pair<int, int> charger_dist;
 	vector<Direction> path_to_charger;
-	const int starting_battery;
+	const float starting_battery;
 	bool charging;
 	bool pathing_to_charger;
 

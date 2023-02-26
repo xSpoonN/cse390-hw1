@@ -18,7 +18,7 @@ static bool debug = false;
 
 static int start_battery;
 
-static inline void const printarr(const house& model, const std::pair<int, int> p, int currcharge = 0, int currsteps = 0, int maxsteps = -1, int maxcharge = -1) {
+static inline void const printarr(const house& model, const std::pair<int, int> p, float currcharge = 0, int currsteps = 0, int maxsteps = -1, float maxcharge = -1) {
 	cout << "Charge remaining: " << currcharge;
 	if (maxcharge >= 0) cout << "/" << maxcharge;
 	cout << " | Steps taken: " << currsteps;
@@ -33,7 +33,7 @@ static inline void const printarr(const house& model, const std::pair<int, int> 
 }
 
 
-Robot::Robot(house& model, int max_battery, int max_steps, int starting_row, int starting_col)
+Robot::Robot(house& model, float max_battery, int max_steps, int starting_row, int starting_col)
 	: current_battery(max_battery), max_battery(max_battery), current_steps(0), max_steps(max_steps), controller(new Controller(this))
 	, model(model), remaining_dirt(calculate_dirt()), current_row(starting_row), current_col(starting_col) {}
 
@@ -44,7 +44,7 @@ Robot::~Robot() {
 /*
 * Gets the remaining battery on this robot.
 */
-int Robot::remaining_battery() const {
+float Robot::remaining_battery() const {
 	return current_battery;
 }
 
@@ -62,17 +62,13 @@ int Robot::get_dirt_underneath() const {
 bool Robot::is_wall(Direction direction) const {
 	switch (direction) {
 	case Direction::WEST:
-		//cout << "West: ";
-		return /*!inbounds(current_row, current_col - 1) ||*/ Sym::is_wall(model[current_row][current_col - 1]);
+		return Sym::is_wall(model[current_row][current_col - 1]);
 	case Direction::EAST:
-		//cout << "East: ";
-		return /*!inbounds(current_row, current_col + 1) ||*/ Sym::is_wall(model[current_row][current_col + 1]);
+		return Sym::is_wall(model[current_row][current_col + 1]);
 	case Direction::SOUTH:
-		//cout << "South: ";
-		return /*!inbounds(current_row + 1, current_col) ||*/ Sym::is_wall(model[current_row + 1][current_col]);
+		return Sym::is_wall(model[current_row + 1][current_col]);
 	case Direction::NORTH:
-		//cout << "North: ";
-		return /*!inbounds(current_row - 1, current_col) ||*/ Sym::is_wall(model[current_row - 1][current_col]);
+		return Sym::is_wall(model[current_row - 1][current_col]);
 	default:
 		return true;
 	}
@@ -93,6 +89,7 @@ int Robot::clean_house(std::ofstream& output_file) {
 		switch (dir) {
 		case Direction::NORTH:
 			if (!is_wall(dir)) {
+				--current_battery;
 				--current_row;
 			}
 			else if(debug) {
@@ -101,6 +98,7 @@ int Robot::clean_house(std::ofstream& output_file) {
 			break;
 		case Direction::SOUTH:
 			if (!is_wall(dir)) {
+				--current_battery;
 				++current_row;
 			}
 			else if (debug) {
@@ -109,6 +107,7 @@ int Robot::clean_house(std::ofstream& output_file) {
 			break;
 		case Direction::EAST:
 			if (!is_wall(dir)) {
+				--current_battery;
 				++current_col;
 			}
 			else if (debug) {
@@ -117,6 +116,7 @@ int Robot::clean_house(std::ofstream& output_file) {
 			break;
 		case Direction::WEST:
 			if (!is_wall(dir)) {
+				--current_battery;
 				--current_col;
 			}
 			else if (debug) {
@@ -129,19 +129,18 @@ int Robot::clean_house(std::ofstream& output_file) {
 				if (debug) cout << "Cleaning..." << endl;
 				Sym::decrement_dirt(model[current_row][current_col]);
 				--remaining_dirt;
+				--current_battery;
 			}
 			else if (model[current_row][current_col] != Sym::CHARGER) {
 				if (debug) cout << "Told to stay still without cleaning/charging!" << endl;
 			}
 			break;
 		}
-		--current_battery;
 		/* If at the dock, begin charging */
 		if (model[current_row][current_col] == Sym::CHARGER) {
 			if (debug) cout << "Charging..." << endl;
 			output_file << " | Charging (" << current_battery << "/" << max_battery << ") -> (";
-			//current_battery = std::min(current_battery + (max_battery / 20) + 1, max_battery); /* Charging algorithm */
-
+			current_battery = std::min(current_battery + (max_battery / 20), max_battery); /* Charging algorithm */
 			output_file << current_battery << "/" << max_battery << ")";
 			if (remaining_dirt == 0) {
 				output_file << endl;
