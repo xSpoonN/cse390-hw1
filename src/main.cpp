@@ -85,7 +85,7 @@ int main(int argc, char** argv) {
 		vector<char> rowvec;
 		for (char c : line) {
 			if (!Sym::is_valid(c)) { err("Unexpected char in input: " << c); }
-			if (Sym::is_wall(c)) rowvec.push_back(Sym::WALL); else rowvec.push_back(c); /* Standardize walls to '.' */
+			if (c == Sym::NONE) rowvec.push_back(Sym::DIRT0); else rowvec.push_back(c); /* Standardize ' ' to '0' */
 			if (c == Sym::CHARGER) {
 				if (start.first == -1 && start.second == -1) {
 					start = std::make_pair(row, col);
