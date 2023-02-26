@@ -143,11 +143,11 @@ int main(int argc, char** argv) {
 
 	/* Create robot and clean house */
 	Robot robot(model, charge, steps, start.first, start.second);
-	robot.clean_house(outputFile);
+	int success = robot.clean_house(outputFile);
 
 	/* Cleanup */
 	outputFile.close();
 	cout << "Success" << endl;
 	//printarr(model, start, charge, steps);
-	return EXIT_SUCCESS;
+	return success ? EXIT_SUCCESS : EXIT_FAILURE;
 }

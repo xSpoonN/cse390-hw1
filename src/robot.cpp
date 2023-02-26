@@ -16,6 +16,8 @@ using namespace std::chrono;
 
 static bool debug = false;
 
+static int start_battery;
+
 static inline void const printarr(const house& model, const std::pair<int, int> p, int currcharge = 0, int currsteps = 0, int maxsteps = -1, int maxcharge = -1) {
 	cout << "Charge remaining: " << currcharge;
 	if (maxcharge >= 0) cout << "/" << maxcharge;
@@ -79,7 +81,7 @@ bool Robot::is_wall(Direction direction) const {
 /*
 * Attempts to clean the house this robot was initialized with.
 * 
-* @return the amount of steps taken
+* @return 1 if successful, 0 if not
 */
 int Robot::clean_house(std::ofstream& output_file) {
 	while (current_steps < max_steps && current_battery > 0) {
@@ -135,10 +137,11 @@ int Robot::clean_house(std::ofstream& output_file) {
 		}
 		--current_battery;
 		/* If at the dock, begin charging */
-		if (model[current_row][current_col] == Sym::CHARGER) {  // Todo: add charger_dist?
+		if (model[current_row][current_col] == Sym::CHARGER) {
 			if (debug) cout << "Charging..." << endl;
 			output_file << " | Charging (" << current_battery << "/" << max_battery << ") -> (";
-			current_battery = std::min(current_battery + (max_battery / 20) + 1, max_battery);
+			//current_battery = std::min(current_battery + (max_battery / 20) + 1, max_battery); /* Charging algorithm */
+
 			output_file << current_battery << "/" << max_battery << ")";
 			if (remaining_dirt == 0) {
 				output_file << endl;
@@ -156,7 +159,7 @@ int Robot::clean_house(std::ofstream& output_file) {
 	output_file << "Dirt left: " << calculate_dirt() << endl;
 	output_file << "Dead battery: " << (current_battery == 0 ? "True" : "False") << endl;
 	output_file << "Mission success: " << (calculate_dirt() == 0 && model[current_row][current_col] == Sym::CHARGER ? "True" : "False") << endl;
-	return current_steps;
+	return current_battery > 0 && calculate_dirt() == 0 && model[current_row][current_col] == Sym::CHARGER;
 }
 
 int Robot::calculate_dirt() const {
