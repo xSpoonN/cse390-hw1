@@ -8,10 +8,11 @@ The first line of the input file should be `MAX_CHARGE: X`, where X is the max c
 
 The second line should be `MAX_STEPS: Y`, where Y is the max steps before termination.
 
-Starting on the third line, a representation of the house is included with the following rules:
-- `.` represents a wall. (TODO: test with ' ')
+Starting on the third line, a representation of the house is expected with the following rules:
+- `.` represents a wall.
 - `+` represents the charger (note that the robot will start on the charger).
 - `0-9` represent dirt (0 = clean, 9 = maximum dirt).
+  - Optionally, whitespace (` `) is treated as clean (`0`)
 
 Example input file:
 
@@ -27,7 +28,10 @@ MAX_STEPS: 5000
 ..........
 </pre>
 
-If the given house representation is not a perfect rectangle, the blank spaces will be filled with walls.
+- If the given house representation is not a rectangle, the blank spaces will be filled with walls.
+- If the given house is not surrounded by walls, the program will insert the missing walls.
+
+On run, the program will print the values and house representation it interpreted into the terminal.
 
 ## Output
 Upon completion, the program will generate a file `output.txt` in the directory it was run from.
@@ -49,7 +53,7 @@ It also exposes methods related to the robot's "sensors" (adjacent wall sensor, 
 See `robot.h` for more information.
 
 The `Controller` class houses the movement algorithm and is exclusively concerned with deciding the robot's next step.
-It has one public method `get_next_step()`, and uses no information outside of the robot's specified sensors to make its decision.
+It has one public method `get_next_step()`, and uses no external information outside of the robot's specified sensors to make its decision.
 See `controller.h` for more information.
 
 ### Normal Operation
@@ -59,12 +63,12 @@ A `Robot` object is constructed with this information, and when `robot.clean_hou
 
 The Robot "has a" Controller, which it creates in its constructor.
 While the Robot *does* have access to the house map, it is used exclusively as metadata (such as terminating the program early if there is no dirt to clean and the robot is on its charger), and it does not expose any of this to the controller.
-At each iteration of the loop, the robot will ask its controller for the next step.
-The details are outlined below:
+At each iteration of the loop, the robot will ask its controller for the next step, and make the appropriate changes to its position.
+If it finds itself on the charger, it will also begin charging.
 
 #### Controller Decisions
 The controller lays "breadcrumbs" to path back to the charger.
 When invoked, it will first check whether this breadcrumb trail is longer than the robot's remaining battery.
-If so, it will begin pathing back to the charger, and upon reaching the charger, it will remain there until the robot's battery matches its recorded initial battery.
+If so, it will begin pathing back to the charger, and upon reaching the charger, it will continue to return "Stay" commands until the robot's battery matches the initial battery level the controller recorded upon being allocated.
 
 Otherwise, it will call a naive algorithm which chooses a random direction (making sure not to choose a direction blocked by a wall).
