@@ -25,7 +25,6 @@ class Robot {
 	int current_col;
 
 	// Helper Methods
-	// bool inbounds(int, int) const;
 	size_t calculate_dirt() const;
 public:
 	Robot(house& model, size_t max_battery, size_t max_steps, int starting_row, int starting_col);

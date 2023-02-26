@@ -45,7 +45,7 @@ int main(int argc, char** argv) {
 		if (pos == string::npos) { err("Maximum Charge not defined!"); }
 		string mctemp = line.substr(pos + sizeof("MAX_CHARGE:")-1);
 		string mcin = mctemp.substr(mctemp.find_first_not_of(" "), mctemp.find_last_not_of(" "));
-		for (auto c : mcin) { /* Validates input */
+		for (char c : mcin) { /* Validates input */
 			if (!std::isdigit(c)) { err("Invalid MAX_CHARGE input!"); }
 		}
 		charge = std::stoi(mcin);
@@ -57,7 +57,7 @@ int main(int argc, char** argv) {
 		if (pos == string::npos) { err("Maximum Steps not defined!"); }
 		string mstemp = line.substr(pos + sizeof("MAX_STEPS:")-1);
 		string msin = mstemp.substr(mstemp.find_first_not_of(" "), mstemp.find_last_not_of(" "));
-		for (auto c : msin) { /* Validates input */
+		for (char c : msin) { /* Validates input */
 			if (!std::isdigit(c)) { err("Invalid MAX_STEPS input!"); }
 		}
 		steps = std::stoi(msin);
@@ -66,11 +66,11 @@ int main(int argc, char** argv) {
 	/* Read input into a "house" */
 	house model;
 	int row = 0, col = 0;
-	std::pair<int, int> start(-1,-1); // Charger/Start Position
+	std::pair<int, int> start(-1,-1); /* Charger / Start Position */
 	vector<int> rowlen; int maxlen = 0;
 	while (std::getline(file, line)) {
 		vector<char> rowvec;
-		for (auto c : line) {
+		for (char c : line) {
 			if (!Sym::is_valid(c)) { err("Unexpected char in input: " << c); }
 			rowvec.push_back(c);
 			if (c == Sym::CHARGER) {
@@ -87,49 +87,67 @@ int main(int argc, char** argv) {
 		++row; col = 0;
 	}
 
-	/* Fills in ragged models */
+	/* Verify that there was a charger */
+	if (start.first == -1 && start.second == -1) { err("Start position not defined!"); }
+
+	/* Fills out uneven models */
 	for (int i = 0; i < rowlen.size(); i++) {
 		for (int j = 0; j < maxlen - rowlen[i]; j++) {
 			model[i].push_back(Sym::WALL);
 		}
 	}
-	/* Left */
+
+	/* Check for solid wall on left/right */
 	for (int i = 0; i < model.size(); i++) {
+		/* Check left wall */
 		if (!Sym::is_wall(model[i][0])) {
+			/* Insert missing left wall */
 			for (int j = 0; j < model.size(); j++) {
 				model[j].insert(model[j].begin(), Sym::WALL);
 			}
 			++start.second;
 		}
+		/* Check right wall */
 		if (!Sym::is_wall(model[i][model[0].size()-1])) {
+			/* Insert missing right wall */
 			for (int j = 0; j < model.size(); j++) {
 				model[j].push_back(Sym::WALL);
 			}
 		}
 	}
+
+	/* Check for solid wall on top/bottom */
 	for (int i = 0; i < model[0].size(); i++) {
+		/* Check top wall */
 		if (!Sym::is_wall(model[0][i])) {
+			/* Insert missing top wall */
 			model.insert(model.begin(), vector<char>(model[0].size(), Sym::WALL));
 			++start.first;
 		}
+		/* Check bottom wall */
 		if (!Sym::is_wall(model[model.size()-1][i])) {
+			/* Insert missing bottom wall */
 			model.push_back(vector<char>(model[0].size(), Sym::WALL));
 		}
 	}
-	printarr(model, start, charge, steps);
-	if (start.first == -1 && start.second == -1) { err("Start position not defined!"); }
 
+	/* Display model to console */
+	printarr(model, start, charge, steps);
+
+	/* Setup output file */
 	std::ofstream outputFile("output.txt", std::fstream::trunc);
 	if (!outputFile.is_open()) {
 		cout << "Failed to open output file" << endl;
 		return EXIT_FAILURE;
 	}
 
+	/* Create robot and clean house */
 	Robot robot(model, charge, steps, start.first, start.second);
 	robot.clean_house(outputFile);
 
+	/* Cleanup */
 	outputFile.close();
-	cout << "The program has been completed successfully and is capable of completing all the assigned tasks. All the requirements and conditions specified in the program specifications were met successfully by the program. Therefore, the program has terminated its work in a most satisfactory manner and has ended successfully." << endl;
-	printarr(model, start, charge, steps);
+	cout << "Success" << endl;
+	//printarr(model, start, charge, steps);
 	return EXIT_SUCCESS;
 }

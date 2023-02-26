@@ -159,13 +159,6 @@ int Robot::clean_house(std::ofstream& output_file) {
 	return current_steps;
 }
 
-//inline bool Robot::inbounds(int row, int col) const {
-//	//cout << "Current row: " << current_row << " | Current col: " << current_col << endl;
-//	//cout << "row: " << row << " | col: " << col << endl;
-//	//cout << "1:" << (row >= 0) << " 2:" << (col >= 0) << " 3:" << (row < model.size()) << " 4:" << (col < model[0].size()) << endl;
-//	return row >= 0 && col >= 0 && row < model.size() && col < model[0].size();
-//}
-
 size_t Robot::calculate_dirt() const {
 	size_t cnt = 0;
 	for (int i = 0; i < model.size(); i++) {
