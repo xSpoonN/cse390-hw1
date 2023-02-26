@@ -69,6 +69,6 @@ If it finds itself on the charger, it will also begin charging.
 #### Controller Decisions
 The controller lays "breadcrumbs" to path back to the charger.
 When invoked, it will first check whether this breadcrumb trail is longer than the robot's remaining battery.
-If so, it will begin pathing back to the charger, and upon reaching the charger, it will remain there until the robot's battery matches the initial battery level the controller recorded upon being allocated.
+If so, it will begin pathing back to the charger, and upon reaching the charger, it will continue to return "Stay" commands until the robot's battery matches the initial battery level the controller recorded upon being allocated.
 
 Otherwise, it will call a naive algorithm which chooses a random direction (making sure not to choose a direction blocked by a wall).
