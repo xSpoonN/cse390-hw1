@@ -20,7 +20,7 @@ const string MAX_CHARGE_PREFIX = "MAX_CHARGE: ";
 const string MAX_STEPS_PREFIX = "MAX_STEPS: ";
 
 static inline void const printarr(const house & model, const std::pair<int, int> p, float currcharge = 0, int currsteps = 0) {
-	cout << "Charge remaining: " << currcharge << " | Steps remaining: " << currsteps << endl;
+	cout << "Max Charge: " << currcharge << " | Max Steps: " << currsteps << endl;
 	for (int i = 0; i < model.size(); i++) {
 		for (int j = 0; j < model[0].size(); j++) {
 			cout << ((p.first == i && p.second == j) ? 'x' : model[i][j]) << " ";
@@ -158,7 +158,7 @@ int main(int argc, char** argv) {
 	int step = -1;
 	if (argc >= 3) {
 		try {
-			step = std::stoi(*(argv + 2));
+			step = std::stoi(*(argv+2));
 		}
 		catch (...) {
 			step = -1;
@@ -171,7 +171,7 @@ int main(int argc, char** argv) {
 
 	/* Cleanup */
 	outputFile.close();
-	if (success) cout << "Success" << endl;
+	if (success) cout << "Exit Success" << endl;
 	//printarr(model, start, charge, steps);
 	return success ? EXIT_SUCCESS : EXIT_FAILURE;
 }

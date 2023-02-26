@@ -24,7 +24,7 @@ Controller::Controller(const Robot* rob) : rob(rob), charger_dist(pair<int, int>
 
 Direction Controller::get_next_step() {	
 	/* Check if we want to go back to the charger (low battery) */
-		if (pathing_to_charger || rob->remaining_battery() - 2 < static_cast<int>(path_to_charger.size())) {
+	if (pathing_to_charger || rob->remaining_battery() - 2 < static_cast<int>(path_to_charger.size())) {
 		pathing_to_charger = true;
 		/* Check if we have arrived at the charger */
 		if (charger_dist.first == 0 && charger_dist.second == 0) {

@@ -151,10 +151,15 @@ int Robot::clean_house(std::ofstream& output_file) {
 		/* Metadata Usage: If out of dirt, break early */
 		if (remaining_dirt == 0 && model[current_row][current_col] == Sym::CHARGER) break;
 	}
+	/* Print Summary */
 	output_file << "Total steps: " << current_steps << "/" << max_steps << endl;
+	if (step_time >= 0) cout << endl << endl << "Total steps: " << current_steps << "/" << max_steps << endl;
 	output_file << "Dirt left: " << calculate_dirt() << endl;
+	if (step_time >= 0) cout << "Dirt left: " << calculate_dirt() << endl;
 	output_file << "Dead battery: " << (current_battery == 0 ? "True" : "False") << endl;
+	if (step_time >= 0) cout << "Dead battery: " << (current_battery == 0 ? "True" : "False") << endl;
 	output_file << "Mission success: " << (calculate_dirt() == 0 && model[current_row][current_col] == Sym::CHARGER ? "True" : "False") << endl;
+	if (step_time >= 0) cout << "Mission success: " << (calculate_dirt() == 0 && model[current_row][current_col] == Sym::CHARGER ? "True" : "False") << endl << endl;
 	return (current_battery > 0 && calculate_dirt() == 0 && model[current_row][current_col] == Sym::CHARGER) ? 1 : 0;
 }
 
