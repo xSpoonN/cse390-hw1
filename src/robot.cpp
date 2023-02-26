@@ -83,7 +83,6 @@ bool Robot::is_wall(Direction direction) const {
 */
 int Robot::clean_house(std::ofstream& output_file) {
 	while (current_steps < max_steps && current_battery > 0) {
-		--current_battery;
 		++current_steps;
 		/* Update current position based on direction received */
 		Direction dir = controller->get_next_step();
@@ -134,6 +133,7 @@ int Robot::clean_house(std::ofstream& output_file) {
 			}
 			break;
 		}
+		--current_battery;
 		/* If at the dock, begin charging */
 		if (model[current_row][current_col] == Sym::CHARGER) {  // Todo: add charger_dist?
 			if (debug) cout << "Charging..." << endl;
@@ -145,7 +145,7 @@ int Robot::clean_house(std::ofstream& output_file) {
 				break;
 			}
 		}
-		output_file << endl;
+		output_file << " | Battery: " << current_battery << "/" << max_battery << endl;
 		/* Print current matrix to console */
 		if (debug) {
 			printarr(model, std::pair<int, int>(current_row, current_col), current_battery, current_steps, max_steps, max_battery);
