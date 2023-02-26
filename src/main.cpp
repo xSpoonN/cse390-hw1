@@ -39,7 +39,7 @@ int main(int argc, char** argv) {
 
 	/* Parse Max Charge */
 	string line;
-	int charge = 0, steps = 0, pos;
+	int charge = 0, steps = 0; size_t pos;
 	if (std::getline(file, line)) {
 		pos = line.find("MAX_CHARGE:");
 		if (pos == string::npos) { err("Maximum Charge not defined!"); }
@@ -67,7 +67,7 @@ int main(int argc, char** argv) {
 	house model;
 	int row = 0, col = 0;
 	std::pair<int, int> start(-1,-1); /* Charger / Start Position */
-	vector<int> rowlen; int maxlen = 0;
+	vector<int> rowlen; size_t maxlen = 0;
 	while (std::getline(file, line)) {
 		vector<char> rowvec;
 		for (char c : line) {
@@ -82,7 +82,7 @@ int main(int argc, char** argv) {
 			++col;
 		}
 		model.push_back(rowvec);
-		rowlen.push_back(rowvec.size());
+		rowlen.push_back(static_cast<int>(rowvec.size()));
 		if (rowvec.size() > maxlen) maxlen = rowvec.size();
 		++row; col = 0;
 	}

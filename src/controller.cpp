@@ -17,7 +17,7 @@ using std::pair;
 using std::cout;
 using std::endl;
 
-Controller::Controller(const Robot* rob) : rob(rob), charger_dist(pair<size_t, size_t>(0, 0)), path_to_charger({})
+Controller::Controller(const Robot* rob) : rob(rob), charger_dist(pair<int, int>(0, 0)), path_to_charger({})
 	, starting_battery(rob->remaining_battery()), charging(false), pathing_to_charger(false) {
 	std::srand(static_cast<unsigned int>(std::time(nullptr)));
 }

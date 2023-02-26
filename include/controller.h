@@ -12,9 +12,9 @@ class Robot;
 
 class Controller {
 	const Robot* rob;
-	pair<size_t, size_t> charger_dist;
+	pair<int, int> charger_dist;
 	vector<Direction> path_to_charger;
-	const size_t starting_battery;
+	const int starting_battery;
 	bool charging;
 	bool pathing_to_charger;
 

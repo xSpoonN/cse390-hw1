@@ -12,27 +12,27 @@ class Controller;
 
 class Robot {
 	// Robot Data
-	size_t current_battery;
-	size_t max_battery;
-	size_t current_steps;
-	size_t max_steps;
+	int current_battery;
+	int max_battery;
+	int current_steps;
+	int max_steps;
 	Controller* controller;
 
 	// House Metadata
 	house& model;
-	size_t remaining_dirt;
+	int remaining_dirt;
 	int current_row;
 	int current_col;
 
 	// Helper Methods
-	size_t calculate_dirt() const;
+	int calculate_dirt() const;
 public:
-	Robot(house& model, size_t max_battery, size_t max_steps, int starting_row, int starting_col);
+	Robot(house& model, int max_battery, int max_steps, int starting_row, int starting_col);
 	~Robot();
 	int clean_house(std::ofstream&);
-	size_t get_dirt_underneath() const;
+	int get_dirt_underneath() const;
 	bool is_wall(Direction) const;
-	size_t remaining_battery() const;
+	int remaining_battery() const;
 };
 
 #endif

@@ -31,7 +31,7 @@ static inline void const printarr(const house& model, const std::pair<int, int> 
 }
 
 
-Robot::Robot(house& model, size_t max_battery, size_t max_steps, int starting_row, int starting_col)
+Robot::Robot(house& model, int max_battery, int max_steps, int starting_row, int starting_col)
 	: current_battery(max_battery), max_battery(max_battery), current_steps(0), max_steps(max_steps), controller(new Controller(this))
 	, model(model), remaining_dirt(calculate_dirt()), current_row(starting_row), current_col(starting_col) {}
 
@@ -42,14 +42,14 @@ Robot::~Robot() {
 /*
 * Gets the remaining battery on this robot.
 */
-size_t Robot::remaining_battery() const {
+int Robot::remaining_battery() const {
 	return current_battery;
 }
 
 /*
 * Gets the amount of dirt this robot is currently sitting on.
 */
-size_t Robot::get_dirt_underneath() const {
+int Robot::get_dirt_underneath() const {
 	int dirt = Sym::get_dirt_level(model[current_row][current_col]);
 	return dirt > 0 ? dirt : 0;
 }
@@ -159,8 +159,8 @@ int Robot::clean_house(std::ofstream& output_file) {
 	return current_steps;
 }
 
-size_t Robot::calculate_dirt() const {
-	size_t cnt = 0;
+int Robot::calculate_dirt() const {
+	int cnt = 0;
 	for (int i = 0; i < model.size(); i++) {
 		for (int j = 0; j < model[0].size(); j++) {
 			int dirt = Sym::get_dirt_level(model[i][j]);
