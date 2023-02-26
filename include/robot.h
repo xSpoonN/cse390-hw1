@@ -23,12 +23,12 @@ class Robot {
 	int remaining_dirt;
 	int current_row;
 	int current_col;
-	bool visual;
+	int step_time;
 
 	// Helper Methods
 	int calculate_dirt() const;
 public:
-	Robot(house& model, float max_battery, int max_steps, int starting_row, int starting_col, bool visual);
+	Robot(house& model, float max_battery, int max_steps, int starting_row, int starting_col, int step_time);
 	~Robot();
 	int clean_house(std::ofstream&);
 	int get_dirt_underneath() const;

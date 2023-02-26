@@ -85,7 +85,7 @@ int main(int argc, char** argv) {
 		vector<char> rowvec;
 		for (char c : line) {
 			if (!Sym::is_valid(c)) { err("Unexpected char in input: " << c); }
-			rowvec.push_back(c);
+			if (Sym::is_wall(c)) rowvec.push_back(Sym::WALL); else rowvec.push_back(c); /* Standardize walls to '.' */
 			if (c == Sym::CHARGER) {
 				if (start.first == -1 && start.second == -1) {
 					start = std::make_pair(row, col);
@@ -155,13 +155,18 @@ int main(int argc, char** argv) {
 	}
 
 	/* Check for visual simulation flag */
-	bool visual = false;
-	if (argc >= 3 && string(*(argv + 2)) == "-sim") {
-		visual = true;
+	int step = -1;
+	if (argc >= 3) {
+		try {
+			step = std::stoi(*(argv + 2));
+		}
+		catch (...) {
+			step = -1;
+		}
 	}
 
 	/* Create robot and clean house */
-	Robot robot(model, charge, steps, start.first, start.second, visual);
+	Robot robot(model, charge, steps, start.first, start.second, step);
 	int success = robot.clean_house(outputFile);
 
 	/* Cleanup */
