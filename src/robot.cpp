@@ -154,7 +154,7 @@ int Robot::clean_house(std::ofstream& output_file) {
 			sleep_for(milliseconds(400));
 		}
 	}
-	output_file << "Total steps: " << current_steps << endl;
+	output_file << "Total steps: " << current_steps << "/" << max_steps << endl;
 	output_file << "Dirt left: " << calculate_dirt() << endl;
 	output_file << "Dead battery: " << (current_battery == 0 ? "True" : "False") << endl;
 	output_file << "Mission success: " << (calculate_dirt() == 0 && model[current_row][current_col] == Sym::CHARGER ? "True" : "False") << endl;

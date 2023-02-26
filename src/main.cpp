@@ -16,6 +16,9 @@ using std::string;
 using std::vector;
 using house = vector<vector<char>>;
 
+const string MAX_CHARGE_PREFIX = "MAX_CHARGE: ";
+const string MAX_STEPS_PREFIX = "MAX_STEPS: ";
+
 static inline void const printarr(const house & model, const std::pair<int, int> p, float currcharge = 0, int currsteps = 0) {
 	cout << "Charge remaining: " << currcharge << " | Steps remaining: " << currsteps << endl;
 	for (int i = 0; i < model.size(); i++) {
@@ -39,11 +42,11 @@ int main(int argc, char** argv) {
 
 	/* Parse Max Charge */
 	string line;
-	float charge = 0; int steps = 0; size_t pos;
+	float charge = 0; int steps = 0; size_t pos = 0;
 	if (std::getline(file, line)) {
-		pos = line.find("MAX_CHARGE:");
-		if (pos == string::npos) { err("Maximum Charge not defined!"); }
-		string mctemp = line.substr(pos + sizeof("MAX_CHARGE:")-1);
+		if ((pos = line.find(MAX_CHARGE_PREFIX)) == string::npos) { err("Maximum Charge not defined!"); }
+		if (line.length() <= MAX_CHARGE_PREFIX.length()) { err("You must specify a value for Max Charge!"); }
+		string mctemp = line.substr(pos + MAX_CHARGE_PREFIX.length() - 1);
 		string mcin = mctemp.substr(mctemp.find_first_not_of(" "), mctemp.find_last_not_of(" "));
 		try {
 			charge = std::stof(mcin);
@@ -58,9 +61,9 @@ int main(int argc, char** argv) {
 
 	/* Parse Max Steps */
 	if (std::getline(file, line)) {
-		pos = line.find("MAX_STEPS:");
-		if (pos == string::npos) { err("Maximum Steps not defined!"); }
-		string mstemp = line.substr(pos + sizeof("MAX_STEPS:")-1);
+		if ((pos = line.find(MAX_STEPS_PREFIX)) == string::npos) { err("Maximum Steps not defined!"); }
+		if (line.length() <= MAX_STEPS_PREFIX.length()) { err("You must specify a value for Max Steps!"); }
+		string mstemp = line.substr(pos + MAX_STEPS_PREFIX.length() - 1);
 		string msin = mstemp.substr(mstemp.find_first_not_of(" "), mstemp.find_last_not_of(" "));
 		try {
 			steps = std::stoi(msin);
