@@ -25,12 +25,10 @@ Controller::Controller(const Robot* rob) : rob(rob), charger_dist(pair<int, int>
 Direction Controller::get_next_step() {	
 	/* Check if we want to go back to the charger (low battery) */
 		if (pathing_to_charger || rob->remaining_battery() - 2 < static_cast<int>(path_to_charger.size())) {
-		// cout << "Returning to Charger..." << endl;
 		pathing_to_charger = true;
 		/* Check if we have arrived at the charger */
 		if (charger_dist.first == 0 && charger_dist.second == 0) {
-			path_to_charger.clear();  // Clear list in case we arrived "early"
-			// cout << "Charging = true" << endl;
+			path_to_charger.clear();  /* Clear list in case we arrived "early" */
 			charging = true;
 			pathing_to_charger = false;
 			goto br;
