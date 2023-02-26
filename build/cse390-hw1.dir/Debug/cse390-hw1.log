@@ -1,0 +1,15 @@
+﻿  Building Custom Rule C:/Users/James/source/repos/cse390-hw1/CMakeLists.txt
+  controller.cpp
+  main.cpp
+C:\Users\James\source\repos\cse390-hw1\src\main.cpp(44,33): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\James\source\repos\cse390-hw1\src\main.cpp(56,32): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\James\source\repos\cse390-hw1\src\main.cpp(82,33): warning C4267: 'argument': conversion from 'size_t' to '_Ty', possible loss of data
+          with
+          [
+              _Ty=int
+          ]
+C:\Users\James\source\repos\cse390-hw1\src\main.cpp(83,53): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+  robot.cpp
+C:\Users\James\source\repos\cse390-hw1\src\robot.cpp(162,58): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+  Generating Code...
+  cse390-hw1.vcxproj -> C:\Users\James\source\repos\cse390-hw1\build\Debug\cse390-hw1.exe

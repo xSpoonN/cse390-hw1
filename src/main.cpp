@@ -47,7 +47,9 @@ int main(int argc, char** argv) {
 		string mcin = mctemp.substr(mctemp.find_first_not_of(" "), mctemp.find_last_not_of(" "));
 		try {
 			charge = std::stof(mcin);
-			if (charge < 0) throw ([&](void***){});
+			if (charge <= 0) {
+				err("Max Charge must be positive!");
+			}
 		}
 		catch (...) {
 			err("Invalid MAX_CHARGE input!");
@@ -62,7 +64,9 @@ int main(int argc, char** argv) {
 		string msin = mstemp.substr(mstemp.find_first_not_of(" "), mstemp.find_last_not_of(" "));
 		try {
 			steps = std::stoi(msin);
-			if (steps < 0) throw ([&](void***){});
+			if (steps <= 0) {
+				err("Max Steps must be positive!");
+			}
 		}
 		catch (...) {
 			err("Invalid MAX_STEPS input!");
