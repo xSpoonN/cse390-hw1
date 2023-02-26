@@ -154,8 +154,14 @@ int main(int argc, char** argv) {
 		return EXIT_FAILURE;
 	}
 
+	/* Check for visual simulation flag */
+	bool visual = false;
+	if (argc >= 3 && string(*(argv + 2)) == "-sim") {
+		visual = true;
+	}
+
 	/* Create robot and clean house */
-	Robot robot(model, charge, steps, start.first, start.second);
+	Robot robot(model, charge, steps, start.first, start.second, visual);
 	int success = robot.clean_house(outputFile);
 
 	/* Cleanup */

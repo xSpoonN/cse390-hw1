@@ -16,8 +16,6 @@ using namespace std::chrono;
 
 static bool debug = false;
 
-static int start_battery;
-
 static inline void const printarr(const house& model, const std::pair<int, int> p, float currcharge = 0, int currsteps = 0, int maxsteps = -1, float maxcharge = -1) {
 	cout << "Charge remaining: " << currcharge;
 	if (maxcharge >= 0) cout << "/" << maxcharge;
@@ -33,9 +31,9 @@ static inline void const printarr(const house& model, const std::pair<int, int> 
 }
 
 
-Robot::Robot(house& model, float max_battery, int max_steps, int starting_row, int starting_col)
+Robot::Robot(house& model, float max_battery, int max_steps, int starting_row, int starting_col, bool visual)
 	: current_battery(max_battery), max_battery(max_battery), current_steps(0), max_steps(max_steps), controller(new Controller(this))
-	, model(model), remaining_dirt(calculate_dirt()), current_row(starting_row), current_col(starting_col) {}
+	, model(model), remaining_dirt(calculate_dirt()), current_row(starting_row), current_col(starting_col), visual(visual) {}
 
 Robot::~Robot() {
 	delete controller;
@@ -84,7 +82,7 @@ int Robot::clean_house(std::ofstream& output_file) {
 		++current_steps;
 		/* Update current position based on direction received */
 		Direction dir = controller->get_next_step();
-		if (debug) cout << "Direction: " << dirstr(dir) << endl;
+		if (visual) cout << endl << endl << "Direction: " << dirstr(dir) << endl;
 		output_file << "Step " << current_steps << ": " << dirstr(dir);
 		switch (dir) {
 		case Direction::NORTH:
@@ -92,7 +90,7 @@ int Robot::clean_house(std::ofstream& output_file) {
 				--current_battery;
 				--current_row;
 			}
-			else if(debug) {
+			else if (debug) {
 				cout << "Controller tried to direct us into a wall!" << endl;
 			}
 			break;
@@ -126,7 +124,7 @@ int Robot::clean_house(std::ofstream& output_file) {
 		case Direction::STAY:
 			if (Sym::get_dirt_level(model[current_row][current_col]) > 0) {
 				output_file << " | Cleaning dirt level " << Sym::get_dirt_level(model[current_row][current_col]);
-				if (debug) cout << "Cleaning..." << endl;
+				if (visual) cout << "Cleaning..." << endl;
 				Sym::decrement_dirt(model[current_row][current_col]);
 				--remaining_dirt;
 				--current_battery;
@@ -138,7 +136,7 @@ int Robot::clean_house(std::ofstream& output_file) {
 		}
 		/* If at the dock, begin charging */
 		if (model[current_row][current_col] == Sym::CHARGER) {
-			if (debug) cout << "Charging..." << endl;
+			if (visual) cout << "Charging..." << endl;
 			output_file << " | Charging (" << current_battery << "/" << max_battery << ") -> (";
 			current_battery = std::min(current_battery + (max_battery / 20), max_battery); /* Charging algorithm */
 			output_file << current_battery << "/" << max_battery << ")";
@@ -149,9 +147,9 @@ int Robot::clean_house(std::ofstream& output_file) {
 		}
 		output_file << " | Battery: " << current_battery << "/" << max_battery << endl;
 		/* Print current matrix to console */
-		if (debug) {
+		if (visual) {
 			printarr(model, std::pair<int, int>(current_row, current_col), current_battery, current_steps, max_steps, max_battery);
-			sleep_for(milliseconds(400));
+			sleep_for(milliseconds(800));
 		}
 	}
 	output_file << "Total steps: " << current_steps << "/" << max_steps << endl;
