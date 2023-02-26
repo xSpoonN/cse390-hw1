@@ -147,7 +147,7 @@ int main(int argc, char** argv) {
 
 	/* Cleanup */
 	outputFile.close();
-	cout << "Success" << endl;
+	if (success) cout << "Success" << endl;
 	//printarr(model, start, charge, steps);
 	return success ? EXIT_SUCCESS : EXIT_FAILURE;
 }
